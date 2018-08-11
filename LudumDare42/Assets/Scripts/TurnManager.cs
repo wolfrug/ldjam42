@@ -22,7 +22,7 @@ public class TurnManager : MonoBehaviour {
                 return turnOrder[currentIndex_];
             }
             else {
-                Debug.Log("Reached end of list, updating!");
+                //Debug.Log("Reached end of list, updating!");
                 UpdateTurnOrder();
                 return currentActive;
             }
@@ -44,21 +44,27 @@ public class TurnManager : MonoBehaviour {
 
     public void UpdateTurnOrder() {
         
-        Debug.Log("Updating turn order");
+        //Debug.Log("Updating turn order");
         turnOrder.Clear();
         foreach (ActiveEntity entity in FindObjectsOfType<ActiveEntity>()) {
-            turnOrder.Add(entity);
+            if (entity.health > 0) {
+                turnOrder.Add(entity);
+            }
             entity.controllerActive = false;
         }
         turnOrder.Sort((x,y) => -y.speed_.CompareTo(-x.speed_));
 
+        for (int i = 0; i < turnOrder.Count; i++) {
+            turnOrder[i].turnOrder = "Turn: " + i.ToString();
+        }
+
         currentIndex_ = 0;
         currentActive.controllerActive = true;
 
-        /*
+        
         for (int i = 0; i < turnOrder_.Count; i++) {
             Debug.Log(turnOrder_[i].gameObject.name);
-        }*/
+        }
     }
 
 
@@ -68,7 +74,7 @@ public class TurnManager : MonoBehaviour {
         currentActive.controllerActive = false;
         currentIndex_ += 1;
         currentActive.controllerActive = true;
-        Debug.Log(currentIndex_);
+        //Debug.Log(currentIndex_);
         
         
     }

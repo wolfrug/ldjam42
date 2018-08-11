@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour {
     public Grid movementGrid_;
     public ActiveEntity playerStats_;
     public bool isActive_ = true;
+    public bool dead_;
     public int gridUnitsToMove_ = 1;
     private float movementSteps_;
     private bool isMoving_ = false;
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour {
 
     public IEnumerator Attack(EnemyController enemy) {
         Debug.Log("Attacking " + enemy.gameObject.name);
-
+        isMoving_ = true;
         ActiveEntity enemyStats = enemy.GetComponentInParent<ActiveEntity>();
 
         // Attempt attack!
@@ -95,7 +96,8 @@ public class PlayerController : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(0.5f);
-        TurnManager._Instance.NextTurn();
+        EndTurn();
+        isMoving_ = false;
     }
 
 
@@ -109,7 +111,7 @@ public class PlayerController : MonoBehaviour {
         }
         playerObj_.transform.position = position;
         isMoving_ = false;
-        TurnManager._Instance.NextTurn();
+        EndTurn();
 
     }
 
@@ -147,43 +149,57 @@ public class PlayerController : MonoBehaviour {
         rb.AddForce(direction * -5f, ForceMode.Impulse);
         rb.gameObject.tag = "Untagged";
         rb.gameObject.layer = 9;
+        dead_ = true;
 
+    }
+
+    void EndTurn() {
+        TurnManager._Instance.NextTurn();
     }
 
     // Update is called once per frame
     void Update () {
 
         if (isActive_) {
-            if (!isMoving_) {
-                if (Input.GetKeyDown(KeyCode.UpArrow)) {
-                    //Debug.Log("Up!");
-                    if (GetValidMove(MoveUp())) {
-                        MoveUp(true);
+            if (!dead_) {
+                if (!isMoving_) {
+                    if (Input.GetKeyDown(KeyCode.UpArrow)) {
+                        //Debug.Log("Up!");
+                        if (GetValidMove(MoveUp())) {
+                            MoveUp(true);
+                        }
                     }
 
-                }
-
-                if (Input.GetKeyUp(KeyCode.DownArrow)) {
-                    //Debug.Log("Down!");
-                    if (GetValidMove(MoveDown())) {
-                        MoveDown(true);
+                    if (Input.GetKeyUp(KeyCode.DownArrow)) {
+                        //Debug.Log("Down!");
+                        if (GetValidMove(MoveDown())) {
+                            MoveDown(true);
+                        }
                     }
-                }
 
-                if (Input.GetKeyUp(KeyCode.LeftArrow)) {
-                    //Debug.Log("Left!");
-                    if (GetValidMove(MoveLeft())) {
-                        MoveLeft(true);
+                    if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+                        //Debug.Log("Left!");
+                        if (GetValidMove(MoveLeft())) {
+                            MoveLeft(true);
+                        }
                     }
-                }
 
-                if (Input.GetKeyUp(KeyCode.RightArrow)) {
-                    //Debug.Log("Right!");
-                    if (GetValidMove(MoveRight())) {
-                        MoveRight(true);
+                    if (Input.GetKeyUp(KeyCode.RightArrow)) {
+                        //Debug.Log("Right!");
+                        if (GetValidMove(MoveRight())) {
+                            MoveRight(true);
+                        }
+                    }
+                    if (Input.GetKeyUp(KeyCode.Space)) {
+                        //Debug.Log("Waited!!");
+                        EndTurn();
                     }
                 }
             }
+            else {
+                EndTurn();
+            }
+
         }
 
     }

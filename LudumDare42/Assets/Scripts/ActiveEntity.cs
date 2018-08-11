@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class ActiveEntity : MonoBehaviour {
@@ -15,6 +16,8 @@ public class ActiveEntity : MonoBehaviour {
     public float speed_;
 
     public GameObject textPrefab_;
+    public Image healthIndicator_;
+    public Text turnIndicator_;
 
     public DestroyableEntity reference_;
 
@@ -45,6 +48,16 @@ public class ActiveEntity : MonoBehaviour {
         }
         set {
             health_ += value;
+            healthIndicator_.fillAmount = (float)health_/ (float)reference_.health_;
+        }
+    }
+
+    public string turnOrder {
+        get {
+            return turnIndicator_.text;
+        }
+        set {
+            turnIndicator_.text = value;
         }
     }
 
@@ -62,11 +75,11 @@ public class ActiveEntity : MonoBehaviour {
         }
         set {
             if (enemyController_ != null) {
-                Debug.Log("Setting enemy controller to " + value);
+                //Debug.Log("Setting enemy controller to " + value);
                 enemyController_.isActive_ = value;
             }
             else if (playerController_ != null) {
-                Debug.Log("Setting player controller to " + value);
+                //Debug.Log("Setting player controller to " + value);
                 playerController_.isActive_ = value;
             }
             else {
