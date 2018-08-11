@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47ca09822b0c56d48afb32cf745256b6, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  name_: Player
+  name_: Samurai
   health_: 10
   dodge_: 0.3
   attackRating_: 0.5
@@ -20,3 +20,4 @@ MonoBehaviour:
   armor_: 0
   armorPiercing_: 0
   speed_: 2
+  energy_: 0

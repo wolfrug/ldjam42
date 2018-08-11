@@ -7,24 +7,18 @@ public class TurnManager : MonoBehaviour {
 
     public static TurnManager _Instance;
     private List<ActiveEntity> turnOrder_ = new List<ActiveEntity> { };
+    private ActiveEntity[] allEntities_;
     private int currentIndex_ = 0;
-
-    public List<ActiveEntity> turnOrder {
-        get {
-            return turnOrder_;
-        }
-    }
 
     public ActiveEntity currentActive {
 
         get {
-            if (turnOrder.Count > currentIndex_) {
-                return turnOrder[currentIndex_];
+            if (turnOrder_.Count > currentIndex_) {
+                return turnOrder_[currentIndex_];
             }
             else {
-                //Debug.Log("Reached end of list, updating!");
-                UpdateTurnOrder();
-                return currentActive;
+                
+                return null;
             }
         }
     }
@@ -33,57 +27,86 @@ public class TurnManager : MonoBehaviour {
         if (_Instance == null) {
             _Instance = this;
         }
+        else if (_Instance != this) {
+            Destroy(gameObject);
+        }
+        allEntities_ = FindObjectsOfType<ActiveEntity>();
     }
 
     public void Start() {
 
-        UpdateTurnOrder();
-        
+        //StartCoroutine(UpdateTurnOrder());
 
     }
 
-    public void UpdateTurnOrder() {
-        
-        //Debug.Log("Updating turn order");
-        turnOrder.Clear();
-        foreach (ActiveEntity entity in FindObjectsOfType<ActiveEntity>()) {
+    void StartNewTurn() {
+        StopAllCoroutines();
+        turnOrder_.Clear();
+        turnOrder_.Capacity = 0;
+        foreach (ActiveEntity entity in allEntities_) {
             if (entity.health > 0) {
-                turnOrder.Add(entity);
+                turnOrder_.Add(entity);
             }
             entity.controllerActive = false;
         }
-        turnOrder.Sort((x,y) => y.speed_.CompareTo(x.speed_));
+        turnOrder_.Sort((x, y) => y.speed_.CompareTo(x.speed_));
 
+        // If everyone is dead, we end the game
+        if (turnOrder_.Count == 0) {
+            EndGame();
+            return;
+        }
+
+        for (int i = 0; i < turnOrder_.Count; i++) {
+            turnOrder_[i].turnOrder = "Turn: " + i.ToString();
+        }
+
+        StartCoroutine(WallsOfDoom());
+    }
+
+    IEnumerator WallsOfDoom() {
         // All walls of doom run last, so run them now
         foreach (WallOfDoomController doom in FindObjectsOfType<WallOfDoomController>()) {
             doom.MoveWall();
         }
-
-        for (int i = 0; i < turnOrder.Count; i++) {
-            turnOrder[i].turnOrder = "Turn: " + i.ToString();
-        }
+        yield return new WaitForSeconds(1f);
 
         currentIndex_ = 0;
-        currentActive.controllerActive = true;
+        if (currentActive != null) {
+            currentActive.controllerActive = true; }
+    }
 
-        
-        for (int i = 0; i < turnOrder_.Count; i++) {
-            Debug.Log(turnOrder_[i].gameObject.name);
+
+
+    public void NextTurn(ActiveEntity sender) {
+
+        if (currentActive != null) {
+
+            if (sender == currentActive) {
+                currentActive.controllerActive = false;
+                currentIndex_ += 1;
+                if (currentActive != null) {
+                    currentActive.controllerActive = true;
+                }
+                else {
+                    StartNewTurn();
+                }
+            }
+            else {
+                Debug.Log("Wrong sender attempted to end turn: " + sender.gameObject.name);
+            }
         }
-    }
-
-
-
-    public void NextTurn() {
-
-        currentActive.controllerActive = false;
-        currentIndex_ += 1;
-        currentActive.controllerActive = true;
+        else {
+            StartNewTurn();
+        };
         //Debug.Log(currentIndex_);
+
         
         
     }
 
-
+    public void EndGame() {
+        Debug.LogWarning("FINISHED GAME: ALL DEAD");
+    }
 
 }

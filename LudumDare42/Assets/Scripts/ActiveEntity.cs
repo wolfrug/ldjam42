@@ -14,6 +14,7 @@ public class ActiveEntity : MonoBehaviour {
     public int armor_;
     public int armorPiercing_;
     public float speed_;
+    public float energy_;
 
     public GameObject textPrefab_;
     public Image healthIndicator_;
@@ -26,19 +27,27 @@ public class ActiveEntity : MonoBehaviour {
 
     void Start() {
 
-        health_ = reference_.health_;
-        dodge_ = reference_.dodge_;
-        attackRating_ = reference_.attackRating_;
-        criticalChance_ = reference_.criticalChance_;
-        damage_ = reference_.damage_;
-        armor_ = reference_.armor_;
-        armorPiercing_ = reference_.armorPiercing_;
-        speed_ = reference_.speed_;
+        UpdateStats();
 
         enemyController_ = GetComponentInChildren<EnemyController>(true);
         playerController_ = GetComponentInChildren<PlayerController>(true);
 
         textPrefab_.SetActive(false);
+
+    }
+
+    public void UpdateStats() {
+        int currentLevel = PlayerManager.currentPlayerLevel_;
+        health_ = reference_.Health(currentLevel);
+        dodge_ = reference_.Dodge(currentLevel);
+        attackRating_ = reference_.AttackRating(currentLevel);
+        criticalChance_ = reference_.CriticalChance(currentLevel);
+        damage_ = reference_.Damage(currentLevel);
+        armor_ = reference_.Armor(currentLevel);
+        armorPiercing_ = reference_.AP(currentLevel);
+        speed_ = reference_.Speed(currentLevel);
+        energy_ = reference_.Energy(currentLevel);
+
 
     }
 
@@ -48,7 +57,7 @@ public class ActiveEntity : MonoBehaviour {
         }
         set {
             health_ += value;
-            healthIndicator_.fillAmount = (float)health_/ (float)reference_.health_;
+            healthIndicator_.fillAmount = (float)health_/ (float)reference_.Health(PlayerManager.currentPlayerLevel_);
         }
     }
 
@@ -77,6 +86,9 @@ public class ActiveEntity : MonoBehaviour {
             if (enemyController_ != null) {
                 //Debug.Log("Setting enemy controller to " + value);
                 enemyController_.isActive_ = value;
+                if (value == true) {
+                    enemyController_.DoMove();
+                };
             }
             else if (playerController_ != null) {
                 //Debug.Log("Setting player controller to " + value);

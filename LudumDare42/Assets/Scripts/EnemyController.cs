@@ -74,22 +74,22 @@ public class EnemyController : MonoBehaviour {
 
         // But we only start moving if the player is close enough
         if (Vector3.Distance(player_.transform.position, enemyObj_.transform.position) < 10) {
-            Debug.Log("Moving in direction: " + returnInt);
+            //Debug.Log("Moving in direction: " + returnInt);
             return returnInt;
         }
         else {
-            Debug.Log("Player too far away; ending things!");
+            //Debug.Log("Player too far away.");
             return -1;
         }
 
     }
 
-    // Update is called once per frame
-    void Update() {
-
-        if (isActive_) {
-            if (!isMoving_ && !dead_) {
-
+    
+    public void DoMove() {
+        
+        if (isActive_ && !isMoving_) {
+            if (!dead_) {
+                
                 // Check just in case to make sure we -can- move, if we can't, we wait
                 if (!GetValidMove(MoveUp()) && !GetValidMove(MoveDown()) && !GetValidMove(MoveLeft()) && !GetValidMove(MoveRight())) {
                     Debug.Log("No move found, ending turn.");
@@ -98,16 +98,19 @@ public class EnemyController : MonoBehaviour {
 
                 int direction = EnemyDirection();
                 if (direction != -1) {
-                    MoveInDirection(EnemyDirection());
+                    MoveInDirection(direction);
                 }
                 else {
                     EndTurn();
                 };
                 attemptedMoves_ += 1;
             }
-            if (dead_) {
+            else {
                 EndTurn();
             }
+        }
+        else {
+            EndTurn();
         }
     }
 
@@ -116,6 +119,7 @@ public class EnemyController : MonoBehaviour {
             //Debug.Log("Up!");
             if (GetValidMove(MoveUp())) {
                 MoveUp(true);
+                return;
             }
         }
 
@@ -123,12 +127,14 @@ public class EnemyController : MonoBehaviour {
             //Debug.Log("Down!");
             if (GetValidMove(MoveDown())) {
                 MoveDown(true);
+                return;
             }
         }
         if (direction == 2) {
             //Debug.Log("Left!");
             if (GetValidMove(MoveLeft())) {
                 MoveLeft(true);
+                return;
             }
         }
 
@@ -136,25 +142,26 @@ public class EnemyController : MonoBehaviour {
             //Debug.Log("Right!");
             if (GetValidMove(MoveRight())) {
                 MoveRight(true);
+                return;
             }
         }
-        
-        if (direction == -1) {
+        EndTurn();
+        /*if (direction == -1) {
             EndTurn();
-        }
+        }/*
+        else {
+            //DoMove();
+            EndTurn();
+        }*/
     }
 
     void EndTurn() {
-        TurnManager._Instance.NextTurn();
+        TurnManager._Instance.NextTurn(enemyStats_);
         attemptedMoves_ = 0;
+        isMoving_ = false;
     }
 
-    private IEnumerator DebugWaiter() {
-        debugWaiter_ = true;
-        yield return new WaitForSeconds(1f);
-        TurnManager._Instance.NextTurn();
-        debugWaiter_ = false;
-    }
+    
 
     public bool GetValidMove(Vector3 goal) {
 
@@ -169,14 +176,15 @@ public class EnemyController : MonoBehaviour {
         Collider[] colls = Physics.OverlapSphere(goal, 0.1f, 9);
 
         if (colls.Length == 0) {
-            Debug.Log("Valid move! ");
+            //Debug.Log("Valid move! ");
             return true;
         }
         else {
-            Debug.Log("Invalid move! Checking for enemy");
+            //Debug.Log("Invalid move! Checking for enemy");
             PlayerController enemy = DetectDestroyable(colls);
             if (enemy != null) {
                 StartCoroutine(Attack(enemy));
+                isMoving_ = true;
             }
             return false;
         }
@@ -199,7 +207,7 @@ public class EnemyController : MonoBehaviour {
     }
 
     public IEnumerator Attack(PlayerController enemy) {
-        Debug.Log("Attacking " + enemy.gameObject.name);
+        Debug.Log(gameObject.name + "is attacking " + enemy.gameObject.name);
         isMoving_ = true;
         ActiveEntity enemyStats = enemy.GetComponentInParent<ActiveEntity>();
 
@@ -237,6 +245,7 @@ public class EnemyController : MonoBehaviour {
             if (velocity.magnitude < 0.1f) { break; };
             yield return new WaitForEndOfFrame();
         }
+        yield return new WaitForEndOfFrame();
         enemyObj_.transform.position = position;
         isMoving_ = false;
         EndTurn();
@@ -275,7 +284,7 @@ public class EnemyController : MonoBehaviour {
 
         rb.isKinematic = false;
         rb.WakeUp();
-        rb.AddForce(direction*(enemyStats_.health - 1), ForceMode.Impulse);
+        rb.AddForce(direction*(enemyStats_.health - 5), ForceMode.Impulse);
         rb.gameObject.tag = "Untagged";
         rb.gameObject.layer = 9;
         dead_ = true;

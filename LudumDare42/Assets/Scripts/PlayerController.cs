@@ -30,8 +30,6 @@ public class PlayerController : MonoBehaviour {
         rb = GetComponentInChildren<Rigidbody>();
 
         movementSteps_ = movementGrid_.cellSize.x + movementGrid_.cellGap.x;
-
-        TurnManager mng = TurnManager._Instance;
     }
 	
     public bool GetValidMove(Vector3 goal) {
@@ -72,7 +70,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     public IEnumerator Attack(EnemyController enemy) {
-        Debug.Log("Attacking " + enemy.gameObject.name);
+        Debug.Log("Player is Attacking " + enemy.gameObject.name);
         isMoving_ = true;
         ActiveEntity enemyStats = enemy.GetComponentInParent<ActiveEntity>();
 
@@ -154,12 +152,12 @@ public class PlayerController : MonoBehaviour {
     }
 
     void EndTurn() {
-        TurnManager._Instance.NextTurn();
+        TurnManager._Instance.NextTurn(playerStats_);
     }
 
     // Update is called once per frame
     void Update () {
-
+        
         if (isActive_) {
             if (!dead_) {
                 if (!isMoving_) {
@@ -198,9 +196,10 @@ public class PlayerController : MonoBehaviour {
             }
             else {
                 EndTurn();
+                //this.enabled = false;
             }
 
         }
-
+        
     }
 }
