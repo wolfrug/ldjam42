@@ -14,7 +14,7 @@ public class DestroyableEntity : ScriptableObject {
     public int armorPiercing_;
     public float speed_ = 1f;
 
-    public float energy_;
+    public int energy_;
 
     public float healthLevelCoefficient_ = 0.1f;
     public float dodgeLevelCoefficient = 0.1f;
@@ -25,6 +25,8 @@ public class DestroyableEntity : ScriptableObject {
     public float apCoefficient = 0.1f;
     public float speedCoefficient = 0.1f;
     public float energyCoefficient = 0.1f;
+
+    public PlayerSkill[] skills_;
 
     public int Health(int level) {
 
@@ -66,9 +68,9 @@ public class DestroyableEntity : ScriptableObject {
         float newVal = (level * speedCoefficient)+speed_;
         return newVal;
     }
-    public float Energy(int level) {
+    public int Energy(int level) {
 
-        float newVal = (level * energyCoefficient)+energy_;
+        int newVal = (int)(level * energyCoefficient)+energy_;
         return newVal;
 
     }

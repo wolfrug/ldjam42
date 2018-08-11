@@ -176,6 +176,7 @@ public class PlayerController : MonoBehaviour {
     void Update () {
         
         if (isActive_) {
+            PlayerManager.instance_.ActivateWaitingTurnPanel(false);
             if (!dead_) {
                 if (!isMoving_) {
                     if (Input.GetKeyDown(KeyCode.UpArrow)) {
@@ -216,6 +217,9 @@ public class PlayerController : MonoBehaviour {
                 //this.enabled = false;
             }
 
+        }
+        else {
+            PlayerManager.instance_.ActivateWaitingTurnPanel(true);
         }
         
     }

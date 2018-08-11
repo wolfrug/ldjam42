@@ -14,7 +14,7 @@ public class ActiveEntity : MonoBehaviour {
     public int armor_;
     public int armorPiercing_;
     public float speed_;
-    public float energy_;
+    public int energy_;
 
     public GameObject textPrefab_;
     public Image healthIndicator_;
@@ -31,19 +31,23 @@ public class ActiveEntity : MonoBehaviour {
 
         enemyController_ = GetComponentInChildren<EnemyController>(true);
         playerController_ = GetComponentInChildren<PlayerController>(true);
-
-        UpdateStats();
+        
+        UpdateStats(true);
 
         textPrefab_.SetActive(false);
 
     }
 
-    public void UpdateStats() {
+    public void UpdateStats(bool updateHealthAndEnergy = false) {
         int currentLevel = 1;
         if (playerController_ != null) {
             currentLevel = PlayerManager.currentPlayerLevel_;
         }
-        health_ = reference_.Health(currentLevel);
+        if (updateHealthAndEnergy) {
+            health_ = reference_.Health(currentLevel);
+            energy_ = reference_.Energy(currentLevel);
+        };
+
         dodge_ = reference_.Dodge(currentLevel);
         attackRating_ = reference_.AttackRating(currentLevel);
         criticalChance_ = reference_.CriticalChance(currentLevel);
@@ -51,7 +55,7 @@ public class ActiveEntity : MonoBehaviour {
         armor_ = reference_.Armor(currentLevel);
         armorPiercing_ = reference_.AP(currentLevel);
         speed_ = reference_.Speed(currentLevel);
-        energy_ = reference_.Energy(currentLevel);
+        
 
 
     }
@@ -69,7 +73,7 @@ public class ActiveEntity : MonoBehaviour {
         }
     }
 
-    public float energy {
+    public int energy {
         get {
             return energy_;
         }

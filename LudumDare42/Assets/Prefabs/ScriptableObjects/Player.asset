@@ -20,7 +20,7 @@ MonoBehaviour:
   armor_: 0
   armorPiercing_: 0
   speed_: 2
-  energy_: 0
+  energy_: 5
   healthLevelCoefficient_: 0.3
   dodgeLevelCoefficient: 0.1
   attackRatingCoefficient: 0.25
@@ -30,3 +30,6 @@ MonoBehaviour:
   apCoefficient: 0
   speedCoefficient: 0.1
   energyCoefficient: 0.1
+  skills_:
+  - {fileID: 11400000, guid: aa425407ca4869c4a8c94091218913e8, type: 2}
+  - {fileID: 11400000, guid: f5b80b8e57804df429aa8c1ea8697646, type: 2}

@@ -18,6 +18,8 @@ public class PlayerManager : MonoBehaviour {
     public Text playerEnergy_;
     public Text playerXPText_;
 
+    public GameObject notYourTurnPanel_;
+
     public Text playerhealth_;
     public Text playerDodge_;
     public Text playerAttackRating_;
@@ -53,20 +55,28 @@ public class PlayerManager : MonoBehaviour {
         //update UI
         UpdateUI();
     }
+
+    public void SetPlayerClass(DestroyableEntity playerclass) {
+        class_ = playerclass;
+    }
+
+    public void ActivateWaitingTurnPanel(bool active) {
+        notYourTurnPanel_.SetActive(active);
+    }
     
 public void UpdateUI() {
 
         playerLevel_.text = currentPlayerLevel_.ToString();
         playerXPText_.text = playerXP_.ToString() + "/" + XPNeeded().ToString();
-        playerEnergy_.text = player_.playerStats_.energy_ + "/" + class_.Energy(currentPlayerLevel_).ToString();
+        playerEnergy_.text = player_.playerStats_.energy + "/" + class_.Energy(currentPlayerLevel_).ToString();
         playerhealth_.text = player_.playerStats_.health.ToString() + "/" + class_.Health(currentPlayerLevel_).ToString();
-        playerDodge_.text = class_.Dodge(currentPlayerLevel_).ToString();
-        playerAttackRating_.text = class_.AttackRating(currentPlayerLevel_).ToString();
-        playerCritChance_.text = class_.CriticalChance(currentPlayerLevel_).ToString();
-        playerDamage_.text = class_.Damage(currentPlayerLevel_).ToString();
-        playerArmor_.text = class_.Armor(currentPlayerLevel_).ToString();
-        playerAP_.text = class_.AP(currentPlayerLevel_).ToString();
-        playerSpeed_.text = class_.Speed(currentPlayerLevel_).ToString();
+        playerDodge_.text = player_.playerStats_.dodge_.ToString();
+        playerAttackRating_.text = player_.playerStats_.attackRating_.ToString();
+        playerCritChance_.text = player_.playerStats_.criticalChance_.ToString();
+        playerDamage_.text = player_.playerStats_.damage_.ToString();
+        playerArmor_.text = player_.playerStats_.armor_.ToString();
+        playerAP_.text = player_.playerStats_.armorPiercing_.ToString();
+        playerSpeed_.text = player_.playerStats_.speed_.ToString();
     }
 
     public void UpdateHealth() {
@@ -99,7 +109,7 @@ public void UpdateUI() {
             currentPlayerLevel_ += 1;
             playerXP_ = 0;
             UpdateUI();
-            player_.playerStats_.UpdateStats();
+            player_.playerStats_.UpdateStats(true);
         }
 
     }

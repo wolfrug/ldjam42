@@ -10,6 +10,7 @@ public class TurnManager : MonoBehaviour {
     private List<ActiveEntity> turnOrder_ = new List<ActiveEntity> { };
     private ActiveEntity[] allEntities_;
     private int currentIndex_ = 0;
+    private int totalTurnCount_ = 0;
 
     public ActiveEntity currentActive {
 
@@ -21,6 +22,16 @@ public class TurnManager : MonoBehaviour {
                 
                 return null;
             }
+        }
+    }
+    public int currentIndex {
+        get {
+            return currentIndex_;
+        }
+    }
+    public int totalTurnCount {
+        get {
+            return totalTurnCount_;
         }
     }
 
@@ -88,6 +99,7 @@ public class TurnManager : MonoBehaviour {
             if (sender == currentActive) {
                 currentActive.controllerActive = false;
                 currentIndex_ += 1;
+                totalTurnCount_ += 1;
                 if (currentActive != null) {
                     mainCamera_.target = currentActive.gameObject;
                     currentActive.controllerActive = true;
