@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour {
     private float movementSteps_;
     private bool isMoving_ = false;
     private Rigidbody rb;
+    public Animator characterAnimator_;
 
     public bool dead_;
 
@@ -220,16 +221,22 @@ public class EnemyController : MonoBehaviour {
             damage *= 2;
             armorPierce = (armorPierce + 1) * 2;
             enemyStats.AttemptDoDamage(damage, armorPierce);
+            characterAnimator_.SetTrigger("Critical");
         }
         else {
             if (!enemyStats.AttemptDodge(attackRoll + enemyStats_.attackRating_)) {
                 enemyStats.AttemptDoDamage(damage, armorPierce);
-            };
+                characterAnimator_.SetTrigger("Swing");
+            }
+            else {
+                characterAnimator_.SetTrigger("Swing");
+                enemy.characterAnimator_.SetTrigger("Dodge");
+            }
         };
         if (enemyStats.health <= 0) {
             enemy.Die((enemyObj_.transform.position - enemy.transform.position).normalized);
         }
-
+        
         yield return new WaitForSeconds(0.5f);
         
         EndTurn();
@@ -237,11 +244,14 @@ public class EnemyController : MonoBehaviour {
     }
 
 
-    public IEnumerator SmoothMove(Vector3 position) {
+    public IEnumerator SmoothMove(Vector3 position, Vector3 direction) {
         isMoving_ = true;
-        Vector3 velocity = Vector3.zero;
+        characterAnimator_.SetTrigger("Walk");
+        enemyObj_.transform.localRotation = Quaternion.Euler(direction.x, direction.y,direction.z);
+       Vector3 velocity = Vector3.zero;
         while (true) {
             enemyObj_.transform.position = Vector3.SmoothDamp(enemyObj_.transform.position, position, ref velocity, 0.1f);
+           
             if (velocity.magnitude < 0.1f) { break; };
             yield return new WaitForEndOfFrame();
         }
@@ -254,26 +264,26 @@ public class EnemyController : MonoBehaviour {
 
     public Vector3 MoveUp(bool move = false) {
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, movementSteps_)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, movementSteps_), new Vector3(0f, -90f, 90f)));
         }
         return enemyObj_.transform.position + new Vector3(0f, 0f, movementSteps_);
     }
     public Vector3 MoveDown(bool move = false) {
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, -movementSteps_)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, -movementSteps_), new Vector3(180f, -90f, 90f)));
         }
         return enemyObj_.transform.position + new Vector3(0f, 0f, -movementSteps_);
     }
     public Vector3 MoveLeft(bool move = false) {
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f), new Vector3(90f, -90f, 90f)));
         }
         return enemyObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f);
     }
     public Vector3 MoveRight(bool move = false) {
 
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(movementSteps_, 0f, 0f)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(movementSteps_, 0f, 0f), new Vector3(-90f, -90f, 90f)));
         }
 
         return enemyObj_.transform.position + new Vector3(movementSteps_, 0f, 0f);
@@ -282,12 +292,13 @@ public class EnemyController : MonoBehaviour {
 
     public void Die(Vector3 direction) {
 
-        rb.isKinematic = false;
-        rb.WakeUp();
-        rb.AddForce(direction*(enemyStats_.health - 5), ForceMode.Impulse);
+        //rb.isKinematic = false;
+        //rb.WakeUp();
+        //rb.AddForce(direction*(enemyStats_.health - 5), ForceMode.Impulse);
         rb.gameObject.tag = "Untagged";
         rb.gameObject.layer = 9;
         dead_ = true;
+        characterAnimator_.SetTrigger("Die");
     }
 
 }

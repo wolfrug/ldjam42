@@ -13,11 +13,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name_: Samurai
   health_: 10
-  dodge_: 0.3
+  dodge_: 1
   attackRating_: 0.5
   criticalChance_: 0.1
-  damage_: 1
+  damage_: 2
   armor_: 0
   armorPiercing_: 0
   speed_: 2
   energy_: 0
+  healthLevelCoefficient_: 0.3
+  dodgeLevelCoefficient: 0.1
+  attackRatingCoefficient: 0.25
+  criticalChanceCoefficient: 0.001
+  damageCoefficient: 0.25
+  armorCoefficient: 0
+  apCoefficient: 0
+  speedCoefficient: 0.1
+  energyCoefficient: 0.1

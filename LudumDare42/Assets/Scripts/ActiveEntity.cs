@@ -25,19 +25,24 @@ public class ActiveEntity : MonoBehaviour {
     public EnemyController enemyController_;
     public PlayerController playerController_;
 
-    void Start() {
+    void Awake() {
 
-        UpdateStats();
+        
 
         enemyController_ = GetComponentInChildren<EnemyController>(true);
         playerController_ = GetComponentInChildren<PlayerController>(true);
+
+        UpdateStats();
 
         textPrefab_.SetActive(false);
 
     }
 
     public void UpdateStats() {
-        int currentLevel = PlayerManager.currentPlayerLevel_;
+        int currentLevel = 1;
+        if (playerController_ != null) {
+            currentLevel = PlayerManager.currentPlayerLevel_;
+        }
         health_ = reference_.Health(currentLevel);
         dodge_ = reference_.Dodge(currentLevel);
         attackRating_ = reference_.AttackRating(currentLevel);
@@ -57,9 +62,22 @@ public class ActiveEntity : MonoBehaviour {
         }
         set {
             health_ += value;
-            healthIndicator_.fillAmount = (float)health_/ (float)reference_.Health(PlayerManager.currentPlayerLevel_);
+            int currentLevel = 1;
+            if (playerController_ != null) { currentLevel = PlayerManager.currentPlayerLevel_; };
+            healthIndicator_.fillAmount = (float)health_/ (float)reference_.Health(currentLevel);
+            PlayerManager.instance_.UpdateHealth();
         }
     }
+
+    public float energy {
+        get {
+            return energy_;
+        }
+        set {
+            energy_ += value;
+        }
+    }
+
 
     public string turnOrder {
         get {

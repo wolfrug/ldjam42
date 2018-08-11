@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject playerObj_;
     public Grid movementGrid_;
     public ActiveEntity playerStats_;
+    public Animator characterAnimator_;
     public bool isActive_ = true;
     public bool dead_;
     public int gridUnitsToMove_ = 1;
@@ -16,6 +17,12 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody rb;
 
 	// Use this for initialization
+    void Awake() {
+        if (playerStats_ == null) {
+            playerStats_ = GetComponent<ActiveEntity>();
+        }
+    }
+
 	void Start () {
 		if (playerObj_ == null) {
             playerObj_ = gameObject;
@@ -83,25 +90,34 @@ public class PlayerController : MonoBehaviour {
             damage *= 2;
             armorPierce = (armorPierce + 1) * 2;
             enemyStats.AttemptDoDamage(damage, armorPierce);
+            characterAnimator_.SetTrigger("Critical");
         }
         else {
             if (!enemyStats.AttemptDodge(attackRoll + playerStats_.attackRating_)) {
                 enemyStats.AttemptDoDamage(damage, armorPierce);
-            };
+                characterAnimator_.SetTrigger("Swing");
+            }
+            else {
+                characterAnimator_.SetTrigger("Swing");
+                enemy.characterAnimator_.SetTrigger("Dodge");
+            }
         };
         if (enemyStats.health <= 0) {
             enemy.Die((playerObj_.transform.position - enemy.transform.position).normalized);
+            PlayerManager.instance_.AddXP(enemyStats.reference_);
         }
-
+        
         yield return new WaitForSeconds(0.5f);
         EndTurn();
         isMoving_ = false;
     }
 
 
-    public IEnumerator SmoothMove(Vector3 position) {
+    public IEnumerator SmoothMove(Vector3 position, Vector3 direction) {
         isMoving_ = true;
         Vector3 velocity = Vector3.zero;
+        characterAnimator_.SetTrigger("Walk");
+        playerObj_.transform.localRotation = Quaternion.Euler(direction.x, direction.y, direction.z);
         while (true) {
             playerObj_.transform.position = Vector3.SmoothDamp(playerObj_.transform.position, position, ref velocity, 0.1f);
             if (velocity.magnitude < 0.1f) { break; };
@@ -115,26 +131,26 @@ public class PlayerController : MonoBehaviour {
 
     public Vector3 MoveUp(bool move = false) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_), new Vector3(0f, -90f, 90f)));
         }
         return playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_);
     }
     public Vector3 MoveDown(bool move = false) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_), new Vector3(180f, -90f, 90f)));
         }
         return playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_);
     }
     public Vector3 MoveLeft(bool move = false) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f), new Vector3(90f, -90f, 90f)));
         }
         return playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f);
     }
     public Vector3 MoveRight(bool move = false) {
 
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f), new Vector3(-90f, -90f, 90f)));
         }
 
         return playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f);
@@ -142,12 +158,13 @@ public class PlayerController : MonoBehaviour {
 
     public void Die(Vector3 direction) {
 
-        rb.isKinematic = false;
-        rb.WakeUp();
-        rb.AddForce(direction * (playerStats_.health - 1), ForceMode.Impulse);
+        //rb.isKinematic = false;
+        //rb.WakeUp();
+        //rb.AddForce(direction * (playerStats_.health - 1), ForceMode.Impulse);
         rb.gameObject.tag = "Untagged";
         rb.gameObject.layer = 9;
         dead_ = true;
+        characterAnimator_.SetTrigger("Die");
 
     }
 

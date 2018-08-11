@@ -6,6 +6,7 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour {
 
     public static TurnManager _Instance;
+    public CameraFollow mainCamera_;
     private List<ActiveEntity> turnOrder_ = new List<ActiveEntity> { };
     private ActiveEntity[] allEntities_;
     private int currentIndex_ = 0;
@@ -36,6 +37,7 @@ public class TurnManager : MonoBehaviour {
     public void Start() {
 
         //StartCoroutine(UpdateTurnOrder());
+        mainCamera_ = FindObjectOfType<CameraFollow>();
 
     }
 
@@ -73,6 +75,7 @@ public class TurnManager : MonoBehaviour {
 
         currentIndex_ = 0;
         if (currentActive != null) {
+            mainCamera_.target = currentActive.gameObject;
             currentActive.controllerActive = true; }
     }
 
@@ -86,6 +89,7 @@ public class TurnManager : MonoBehaviour {
                 currentActive.controllerActive = false;
                 currentIndex_ += 1;
                 if (currentActive != null) {
+                    mainCamera_.target = currentActive.gameObject;
                     currentActive.controllerActive = true;
                 }
                 else {
