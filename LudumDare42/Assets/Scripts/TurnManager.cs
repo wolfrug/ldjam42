@@ -52,7 +52,12 @@ public class TurnManager : MonoBehaviour {
             }
             entity.controllerActive = false;
         }
-        turnOrder.Sort((x,y) => -y.speed_.CompareTo(-x.speed_));
+        turnOrder.Sort((x,y) => y.speed_.CompareTo(x.speed_));
+
+        // All walls of doom run last, so run them now
+        foreach (WallOfDoomController doom in FindObjectsOfType<WallOfDoomController>()) {
+            doom.MoveWall();
+        }
 
         for (int i = 0; i < turnOrder.Count; i++) {
             turnOrder[i].turnOrder = "Turn: " + i.ToString();

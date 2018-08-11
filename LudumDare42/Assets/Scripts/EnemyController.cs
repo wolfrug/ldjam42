@@ -18,6 +18,8 @@ public class EnemyController : MonoBehaviour {
     public bool isActive_;
     public bool debugWaiter_;
 
+    private int attemptedMoves_ = 0;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponentInChildren<Rigidbody>();
@@ -76,7 +78,7 @@ public class EnemyController : MonoBehaviour {
             return returnInt;
         }
         else {
-            Debug.Log("Player too far away; moving in random direction" + Vector3.Distance(player_.transform.position, enemyObj_.transform.position));
+            Debug.Log("Player too far away; ending things!");
             return -1;
         }
 
@@ -99,9 +101,9 @@ public class EnemyController : MonoBehaviour {
                     MoveInDirection(EnemyDirection());
                 }
                 else {
-                    int randomDir = Random.Range(0, 5);
-                    MoveInDirection(randomDir);
+                    EndTurn();
                 };
+                attemptedMoves_ += 1;
             }
             if (dead_) {
                 EndTurn();
@@ -144,6 +146,7 @@ public class EnemyController : MonoBehaviour {
 
     void EndTurn() {
         TurnManager._Instance.NextTurn();
+        attemptedMoves_ = 0;
     }
 
     private IEnumerator DebugWaiter() {
@@ -154,6 +157,11 @@ public class EnemyController : MonoBehaviour {
     }
 
     public bool GetValidMove(Vector3 goal) {
+
+        // Quit if we've attempted to move more than 4 times
+        if (attemptedMoves_ > 4) {
+            EndTurn();
+        }
 
         /*for (int i = 0; i < Physics.OverlapSphere(goal, 0.5f, 9).Length; i++) {
             Debug.Log(Physics.OverlapSphere(goal, 0.5f, 9)[i].gameObject.name);
@@ -267,7 +275,7 @@ public class EnemyController : MonoBehaviour {
 
         rb.isKinematic = false;
         rb.WakeUp();
-        rb.AddForce(direction*-5f, ForceMode.Impulse);
+        rb.AddForce(direction*(enemyStats_.health - 1), ForceMode.Impulse);
         rb.gameObject.tag = "Untagged";
         rb.gameObject.layer = 9;
         dead_ = true;

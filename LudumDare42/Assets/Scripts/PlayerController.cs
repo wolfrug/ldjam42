@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour {
 
         rb.isKinematic = false;
         rb.WakeUp();
-        rb.AddForce(direction * -5f, ForceMode.Impulse);
+        rb.AddForce(direction * (playerStats_.health - 1), ForceMode.Impulse);
         rb.gameObject.tag = "Untagged";
         rb.gameObject.layer = 9;
         dead_ = true;
