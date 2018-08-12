@@ -3317,11 +3317,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 224453386149928482, guid: 2bf38b7591854724d850c2d0a683ef26,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4469174726501400, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}
       propertyPath: m_LocalPosition.x
       value: 412.64038
@@ -3353,16 +3348,6 @@ Prefab:
     - target: {fileID: 4469174726501400, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}
       propertyPath: m_RootOrder
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114393928718004710, guid: 2bf38b7591854724d850c2d0a683ef26,
-        type: 2}
-      propertyPath: m_Text
-      value: Western Hallway
-      objectReference: {fileID: 0}
-    - target: {fileID: 114653767975205252, guid: 2bf38b7591854724d850c2d0a683ef26,
-        type: 2}
-      propertyPath: m_Text
-      value: 'Difficulty: Easy'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}
