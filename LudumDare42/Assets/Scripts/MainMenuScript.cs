@@ -21,7 +21,7 @@ public class MainMenuScript : MonoBehaviour {
 
     public void StartApp() {
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("level1");
     }
 
 }
