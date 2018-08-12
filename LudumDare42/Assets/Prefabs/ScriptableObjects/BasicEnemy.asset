@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: BasicEnemy
   m_EditorClassIdentifier: 
   name_: Basic Enemy
-  health_: 2
+  health_: 3
   dodge_: 0.2
   attackRating_: 0.2
   criticalChance_: 0.05
@@ -20,3 +20,14 @@ MonoBehaviour:
   armor_: 0
   armorPiercing_: 0
   speed_: 1
+  energy_: 0
+  healthLevelCoefficient_: 0.1
+  dodgeLevelCoefficient: 0.1
+  attackRatingCoefficient: 0.1
+  criticalChanceCoefficient: 0.1
+  damageCoefficient: 0.1
+  armorCoefficient: 0.1
+  apCoefficient: 0.1
+  speedCoefficient: 0.1
+  energyCoefficient: 0.1
+  skills_: []

@@ -84,6 +84,12 @@ public class WallOfDoomController : MonoBehaviour {
         if(entity != null) {
             if (entity.health > 0) {
                 entity.AttemptDoDamage(999, 999);
+                if (entity.playerController_ != null) {
+                    entity.playerController_.Die(Vector3.zero);
+                }
+                else if (entity.enemyController_ != null) {
+                    entity.enemyController_.Die(Vector3.zero);
+                }
             };
         }
     }

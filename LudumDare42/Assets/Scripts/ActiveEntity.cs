@@ -31,10 +31,12 @@ public class ActiveEntity : MonoBehaviour {
 
         enemyController_ = GetComponentInChildren<EnemyController>(true);
         playerController_ = GetComponentInChildren<PlayerController>(true);
-        
-        UpdateStats(true);
-
         textPrefab_.SetActive(false);
+
+    }
+
+    void Start() {
+        UpdateStats(true);
 
     }
 
@@ -42,6 +44,7 @@ public class ActiveEntity : MonoBehaviour {
         int currentLevel = 1;
         if (playerController_ != null) {
             currentLevel = PlayerManager.currentPlayerLevel_;
+            reference_ = PlayerManager.instance_.class_;
         }
         if (updateHealthAndEnergy) {
             health_ = reference_.Health(currentLevel);
@@ -65,11 +68,13 @@ public class ActiveEntity : MonoBehaviour {
             return health_;
         }
         set {
-            health_ += value;
+            
             int currentLevel = 1;
             if (playerController_ != null) { currentLevel = PlayerManager.currentPlayerLevel_; };
             healthIndicator_.fillAmount = (float)health_/ (float)reference_.Health(currentLevel);
-            PlayerManager.instance_.UpdateHealth();
+            health_ += value;
+            Mathf.Clamp(health_, -999, reference_.Health(currentLevel));
+            MainUIManager.instance_.UpdateHealth();
         }
     }
 
@@ -78,7 +83,11 @@ public class ActiveEntity : MonoBehaviour {
             return energy_;
         }
         set {
-            energy_ += value;
+            int currentLevel = 1;
+            if (playerController_ != null) { currentLevel = PlayerManager.currentPlayerLevel_; };
+            health_ += value;
+            Mathf.Clamp(health_, 0, reference_.Energy(currentLevel));
+            MainUIManager.instance_.UpdateEnergy();
         }
     }
 
@@ -122,21 +131,21 @@ public class ActiveEntity : MonoBehaviour {
         }
     }
 
-    public TextMeshProUGUI createText {
+    public Text createText {
         get {
-            TextMeshProUGUI obj = Instantiate(textPrefab_, textPrefab_.transform.parent).GetComponentInChildren<TextMeshProUGUI>(true);
+            Text obj = Instantiate(textPrefab_, textPrefab_.transform.parent).GetComponentInChildren<Text>(true);
             obj.transform.parent.gameObject.SetActive(true);
             return obj;
         }
     }
-    public void destroyText(TextMeshProUGUI trg) {
+    public void destroyText(Text trg) {
         Destroy(trg.transform.parent.gameObject, 1f);
     }
 
     public bool AttemptCritical(float roll, float criticalChance) {
 
         if (roll > (1f-criticalChance)) {
-            TextMeshProUGUI tmpObj = createText;
+            Text tmpObj = createText;
             tmpObj.color = Color.yellow;
             tmpObj.text = "Critical hit!";
             destroyText(tmpObj);
@@ -151,7 +160,7 @@ public class ActiveEntity : MonoBehaviour {
     public bool AttemptDodge(float roll) {
         if (roll < dodge_) {
 
-            TextMeshProUGUI tmpObj = createText;
+            Text tmpObj = createText;
             tmpObj.color = Color.green;
             tmpObj.text = "Dodged!";
             destroyText(tmpObj);
@@ -166,19 +175,27 @@ public class ActiveEntity : MonoBehaviour {
     public void AttemptDoDamage(int damage, int armorpierce) {
 
         if (armorpierce < armor_) {
-            TextMeshProUGUI tmpObj = createText;
+            Text tmpObj = createText;
             tmpObj.text = "Blocked!";
             tmpObj.color = Color.gray;
             destroyText(tmpObj);
         }
         else {
-            TextMeshProUGUI tmpObj = createText;
+            Text tmpObj = createText;
             tmpObj.text = "\n-" + (damage - armor_).ToString();
             tmpObj.color = Color.red;
             destroyText(tmpObj);
-            health =- (damage - armor_);
+            health = -(damage - armor_);
+            GameManager.instance_.PlayHitSound();
         }
 
+    }
+    public void RegenerateEnergy(int amount) {
+        Text tmpObj = createText;
+        tmpObj.text = "\nEnergy +" + amount.ToString();
+        tmpObj.color = Color.green;
+        destroyText(tmpObj);
+        energy = 1;
     }
 
 }

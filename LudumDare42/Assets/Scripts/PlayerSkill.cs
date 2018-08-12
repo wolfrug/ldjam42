@@ -1,6 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum Directions {
+
+    NONE = 0000,
+    UP = 1000,
+    DOWN = 2000,
+    LEFT = 3000,
+    RIGHT = 4000,
+    RELATIVE_BACK = 5000,
+    RELATIVE_FORWARD = 6000,
+    RELATIVE_LEFT = 7000,
+    RELATIVE_RIGHT = 8000
+    
+}
+
+
 [CreateAssetMenu(fileName = "Data", menuName = "PlayerSkill", order = 1)]
 public class PlayerSkill : ScriptableObject {
     public string name_;
@@ -9,6 +24,10 @@ public class PlayerSkill : ScriptableObject {
     public int energyCost_;
     public bool skipsPlayerTurn = false;
     public int unlocksAtLevel_;
+
+    public Directions moveTargetInDirection_ = Directions.NONE;
+    public int squaresToMove_;
+    public string moveAnimationName_ = "Kick";
 
     public int health_;
     public float dodge_;
@@ -52,11 +71,15 @@ public class PlayerSkill : ScriptableObject {
             // And start the waiter on the skillsmanager
             SkillsManager.instance_.StartCoroutine(SkillsManager.instance_.SkillWaiter(this, currentLevel, target));
             // And update UI!
-            PlayerManager.instance_.UpdateUI();
+            MainUIManager.instance_.UpdateUI();
 
             if (skipsPlayerTurn) {
                 TurnManager._Instance.NextTurn(target);
             }
+            if (moveTargetInDirection_ != Directions.NONE) {
+                target.playerController_.player_Attack.AddListener(MoveTarget);
+            }
+
         };
 
     }
@@ -73,7 +96,113 @@ public class PlayerSkill : ScriptableObject {
         target.speed_ -= Speed(targetLevel);
         target.energy_ -= Energy(targetLevel);
         // Update UI
-        PlayerManager.instance_.UpdateUI();
+        MainUIManager.instance_.UpdateUI();
+    }
+
+    public void MoveTarget(EnemyController target, string success) {
+
+        Debug.Log("Attempting to move " + target.gameObject.name + " with attack " + success);
+
+        if (success == "Dodge") {
+            SkillsManager.instance_.player_.player_Attack.RemoveAllListeners();
+            return;
+        }
+        
+        // Attempts to move the target somehow when activated
+        PlayerController player = FindObjectOfType<PlayerController>();
+
+        int direction = DirectionsToInt(moveTargetInDirection_, player);
+
+            if (direction == 0) {
+                //Debug.Log("Up!");
+                if (target.GetValidMove(target.MoveUp(),false)) {
+                    target.MoveUp(true,false,false);
+                }
+            }
+
+            if (direction == 1) {
+                //Debug.Log("Down!");
+                if (target.GetValidMove(target.MoveDown(),false)) {
+                target.MoveDown(true, false, false);
+                }
+            }
+            if (direction == 2) {
+                //Debug.Log("Left!");
+                if (target.GetValidMove(target.MoveLeft(),false)) {
+                    target.MoveLeft(true,false,false);
+                }
+            }
+
+            if (direction == 3) {
+                //Debug.Log("Right!");
+                if (target.GetValidMove(target.MoveRight(),false)) {
+                    target.MoveRight(true,false,false);
+                }
+            }
+
+        if (moveAnimationName_ != "") {
+            player.characterAnimator_.SetTrigger(moveAnimationName_);
+        };
+
+        SkillsManager.instance_.player_.player_Attack.RemoveAllListeners();
+
+    }
+
+    Directions GetOpposite(Directions trg) {
+        switch (trg) {
+            case Directions.UP: {
+                    return Directions.DOWN;
+                }
+            case Directions.DOWN: {
+                    return Directions.UP;
+                }
+            case Directions.LEFT: {
+                    return Directions.RIGHT;
+                }
+            case Directions.RIGHT: {
+                    return Directions.LEFT;
+                }
+            case Directions.RELATIVE_BACK: {
+                    return Directions.RELATIVE_FORWARD;
+                }
+            case Directions.RELATIVE_FORWARD: {
+                    return Directions.RELATIVE_BACK;
+                }
+            case Directions.RELATIVE_LEFT: {
+                    return Directions.RELATIVE_RIGHT;
+                }
+            case Directions.RELATIVE_RIGHT: {
+                    return Directions.RELATIVE_LEFT;
+                }
+            default: {
+                    return Directions.NONE;
+                }
+        }
+    }
+    int DirectionsToInt(Directions trg, PlayerController rel_facing) {
+        switch (trg) {
+            case Directions.UP: {
+                    return 0;
+                }
+            case Directions.DOWN: {
+                    return 1;
+                }
+            case Directions.LEFT: {
+                    return 2;
+                }
+            case Directions.RIGHT: {
+                    return 3;
+                }
+            case Directions.RELATIVE_BACK: {
+                    return DirectionsToInt(rel_facing.currentFacing_, rel_facing);
+                }
+            case Directions.RELATIVE_FORWARD: {
+                    return DirectionsToInt(GetOpposite(rel_facing.currentFacing_), rel_facing);
+                }
+            default: {
+                    return -1;
+                }
+        }
     }
 
 

@@ -2,10 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class AttackEvent : UnityEvent<EnemyController, string> {
+}
+[System.Serializable]
+public class MoveEvent : UnityEvent<Directions, bool> {
+}
+[System.Serializable]
+public class DeathEvent : UnityEvent<PlayerController> {
+}
 
 public class PlayerController : MonoBehaviour {
 
     public GameObject playerObj_;
+    public GameObject avatar_;
     public Grid movementGrid_;
     public ActiveEntity playerStats_;
     public Animator characterAnimator_;
@@ -16,7 +28,16 @@ public class PlayerController : MonoBehaviour {
     private bool isMoving_ = false;
     private Rigidbody rb;
 
-	// Use this for initialization
+    public Directions currentFacing_;
+
+    // Player_Attack returns the enemy, and the result (as string)
+    public AttackEvent player_Attack = new AttackEvent();
+    // Player move returns attempted direction and success/not 
+    public MoveEvent player_Move = new MoveEvent();
+
+    public DeathEvent player_dead = new DeathEvent();
+
+    // Use this for initialization
     void Awake() {
         if (playerStats_ == null) {
             playerStats_ = GetComponent<ActiveEntity>();
@@ -39,7 +60,7 @@ public class PlayerController : MonoBehaviour {
         movementSteps_ = movementGrid_.cellSize.x + movementGrid_.cellGap.x;
     }
 	
-    public bool GetValidMove(Vector3 goal) {
+    public bool GetValidMove(Vector3 goal, bool checkForEnemy = true) {
 
         /*for (int i = 0; i < Physics.OverlapSphere(goal, 0.5f, 9).Length; i++) {
             Debug.Log(Physics.OverlapSphere(goal, 0.5f, 9)[i].gameObject.name);
@@ -51,11 +72,14 @@ public class PlayerController : MonoBehaviour {
             return true;
         }
         else {
-            //Debug.Log("Invalid move! Checking for enemy");
-            EnemyController enemy = DetectDestroyable(colls);
-            if (enemy != null) {
-                StartCoroutine(Attack(enemy));
-            }
+            if (checkForEnemy) {
+                //Debug.Log("Invalid move! Checking for enemy");
+                EnemyController enemy = DetectDestroyable(colls);
+                if (enemy != null) {
+                    StartCoroutine(Attack(enemy));
+                    isMoving_ = true;
+                }
+            };
             return false;
         }
 
@@ -91,15 +115,20 @@ public class PlayerController : MonoBehaviour {
             armorPierce = (armorPierce + 1) * 2;
             enemyStats.AttemptDoDamage(damage, armorPierce);
             characterAnimator_.SetTrigger("Critical");
+            enemy.characterAnimator_.SetTrigger("Stumble");
+            player_Attack.Invoke(enemy, "Critical");
         }
         else {
             if (!enemyStats.AttemptDodge(attackRoll + playerStats_.attackRating_)) {
                 enemyStats.AttemptDoDamage(damage, armorPierce);
                 characterAnimator_.SetTrigger("Swing");
+                enemy.characterAnimator_.SetTrigger("Stumble");
+                player_Attack.Invoke(enemy, "Hit");
             }
             else {
                 characterAnimator_.SetTrigger("Swing");
                 enemy.characterAnimator_.SetTrigger("Dodge");
+                player_Attack.Invoke(enemy, "Dodge");
             }
         };
         if (enemyStats.health <= 0) {
@@ -113,11 +142,11 @@ public class PlayerController : MonoBehaviour {
     }
 
 
-    public IEnumerator SmoothMove(Vector3 position, Vector3 direction) {
+    public IEnumerator SmoothMove(Vector3 position) {
         isMoving_ = true;
         Vector3 velocity = Vector3.zero;
         characterAnimator_.SetTrigger("Walk");
-        playerObj_.transform.localRotation = Quaternion.Euler(direction.x, direction.y, direction.z);
+        //avatar_.transform.localRotation = Quaternion.Euler(direction.x, direction.y, direction.z);
         while (true) {
             playerObj_.transform.position = Vector3.SmoothDamp(playerObj_.transform.position, position, ref velocity, 0.1f);
             if (velocity.magnitude < 0.1f) { break; };
@@ -129,30 +158,45 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    public Vector3 MoveUp(bool move = false) {
+    public Vector3 MoveUp(bool move = false, bool changeFacing = true) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_), new Vector3(0f, -90f, 90f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_)));
+        }
+        if (changeFacing) {
+            currentFacing_ = Directions.UP;
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
         }
         return playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_);
     }
-    public Vector3 MoveDown(bool move = false) {
+    public Vector3 MoveDown(bool move = false, bool changeFacing = true) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_), new Vector3(180f, -90f, 90f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_)));
         }
+        if (changeFacing) {
+            currentFacing_ = Directions.DOWN;
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+        };
         return playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_);
     }
-    public Vector3 MoveLeft(bool move = false) {
+    public Vector3 MoveLeft(bool move = false, bool changeFacing = true) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f), new Vector3(90f, -90f, 90f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f)));
+        }
+        if (changeFacing) {
+            currentFacing_ = Directions.LEFT;
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
         }
         return playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f);
     }
-    public Vector3 MoveRight(bool move = false) {
+    public Vector3 MoveRight(bool move = false, bool changeFacing = true) {
 
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f), new Vector3(-90f, -90f, 90f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f)));
         }
-
+        if (changeFacing) {
+            currentFacing_ = Directions.RIGHT;
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        }
         return playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f);
     }
 
@@ -165,6 +209,7 @@ public class PlayerController : MonoBehaviour {
         rb.gameObject.layer = 9;
         dead_ = true;
         characterAnimator_.SetTrigger("Die");
+        GameManager.instance_.GameOverDeath();
 
     }
 
@@ -176,17 +221,20 @@ public class PlayerController : MonoBehaviour {
     void Update () {
         
         if (isActive_) {
-            PlayerManager.instance_.ActivateWaitingTurnPanel(false);
+            MainUIManager.instance_.ActivateWaitingTurnPanel(false);
             if (!dead_) {
                 if (!isMoving_) {
                     if (Input.GetKeyDown(KeyCode.UpArrow)) {
+                        player_Move.Invoke(Directions.UP, GetValidMove(MoveUp()));
                         //Debug.Log("Up!");
                         if (GetValidMove(MoveUp())) {
                             MoveUp(true);
                         }
+                        
                     }
 
                     if (Input.GetKeyUp(KeyCode.DownArrow)) {
+                        player_Move.Invoke(Directions.DOWN, GetValidMove(MoveDown()));
                         //Debug.Log("Down!");
                         if (GetValidMove(MoveDown())) {
                             MoveDown(true);
@@ -194,6 +242,7 @@ public class PlayerController : MonoBehaviour {
                     }
 
                     if (Input.GetKeyUp(KeyCode.LeftArrow)) {
+                        player_Move.Invoke(Directions.LEFT, GetValidMove(MoveLeft()));
                         //Debug.Log("Left!");
                         if (GetValidMove(MoveLeft())) {
                             MoveLeft(true);
@@ -201,13 +250,16 @@ public class PlayerController : MonoBehaviour {
                     }
 
                     if (Input.GetKeyUp(KeyCode.RightArrow)) {
+                        player_Move.Invoke(Directions.RIGHT, GetValidMove(MoveRight()));
                         //Debug.Log("Right!");
                         if (GetValidMove(MoveRight())) {
                             MoveRight(true);
                         }
                     }
                     if (Input.GetKeyUp(KeyCode.Space)) {
+                        player_Move.Invoke(Directions.NONE, true);
                         //Debug.Log("Waited!!");
+                        playerStats_.RegenerateEnergy(1);
                         EndTurn();
                     }
                 }
@@ -219,7 +271,7 @@ public class PlayerController : MonoBehaviour {
 
         }
         else {
-            PlayerManager.instance_.ActivateWaitingTurnPanel(true);
+            MainUIManager.instance_.ActivateWaitingTurnPanel(true);
         }
         
     }

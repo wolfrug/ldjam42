@@ -35,6 +35,10 @@ public class SkillsManager : MonoBehaviour {
 
     public void UpdateSkills() {
     
+        foreach (GameObject button in allButtons_) {
+            Destroy(button);
+        }
+
         foreach (PlayerSkill skill in playerClass_.skills_) {
 
             GameObject newButton = Instantiate(buttonPrefab_, parent_);
@@ -42,14 +46,14 @@ public class SkillsManager : MonoBehaviour {
             Button btn = newButton.GetComponent<Button>();
             allButtons_.Add(newButton);
             Text buttonText = newButton.GetComponentInChildren<Text>();
-            buttonText.text = skill.name_ + "\n<size=20><color=orange>" + skill.description_ + "</color>\nCost: " + skill.energyCost_.ToString() + " energy\nDuration: " + skill.turnDuration_.ToString() + " turns</size>";
+            buttonText.text = skill.name_ + "\n<size=30><color=orange>" + skill.description_ + "</color>\nCost: " + skill.energyCost_.ToString() + " energy\nDuration: " + skill.turnDuration_.ToString() + " turns</size>";
             newButton.SetActive(true);
             if (PlayerManager.currentPlayerLevel_ >= skill.unlocksAtLevel_) {
                 btn.interactable = true;
             }
             else {
                 btn.interactable = false;
-                buttonText.text += "\n<color=red>Unlocks at level " + skill.unlocksAtLevel_.ToString() + "</color>";
+                buttonText.text += "\n<size=30><color=red>Unlocks at level " + skill.unlocksAtLevel_.ToString() + "</color></size>";
             }
             btn.onClick.AddListener(() => skill.RunSkill(playerStats_));
         }

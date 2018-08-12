@@ -15,7 +15,11 @@ MonoBehaviour:
   description_: Increased critical chance
   turnDuration_: 1
   energyCost_: 1
-  unlocksAtLevel_: 0
+  skipsPlayerTurn: 0
+  unlocksAtLevel_: 5
+  moveTargetInDirection_: 0
+  squaresToMove_: 0
+  moveAnimationName_: Kick
   health_: 0
   dodge_: 0
   attackRating_: 0

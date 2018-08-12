@@ -16,7 +16,10 @@ MonoBehaviour:
   turnDuration_: -1
   energyCost_: 2
   skipsPlayerTurn: 1
-  unlocksAtLevel_: 0
+  unlocksAtLevel_: 10
+  moveTargetInDirection_: 0
+  squaresToMove_: 0
+  moveAnimationName_: Kick
   health_: 2
   dodge_: 0
   attackRating_: 0

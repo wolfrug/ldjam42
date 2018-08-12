@@ -80,13 +80,15 @@ public class TurnManager : MonoBehaviour {
     IEnumerator WallsOfDoom() {
         // All walls of doom run last, so run them now
         foreach (WallOfDoomController doom in FindObjectsOfType<WallOfDoomController>()) {
-            doom.MoveWall();
+            if (doom.isActive_) {
+                doom.MoveWall();
+                yield return new WaitForSeconds(1f);
+            };
         }
-        yield return new WaitForSeconds(1f);
-
+        yield return new WaitForSeconds(0.1f);
         currentIndex_ = 0;
         if (currentActive != null) {
-            mainCamera_.target = currentActive.gameObject;
+            //mainCamera_.target = currentActive.gameObject;
             currentActive.controllerActive = true; }
     }
 
@@ -101,7 +103,7 @@ public class TurnManager : MonoBehaviour {
                 currentIndex_ += 1;
                 totalTurnCount_ += 1;
                 if (currentActive != null) {
-                    mainCamera_.target = currentActive.gameObject;
+                    //mainCamera_.target = currentActive.gameObject;
                     currentActive.controllerActive = true;
                 }
                 else {

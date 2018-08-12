@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour {
 
     public GameObject enemyObj_;
+    public GameObject avatar_;
     public Grid movementGrid_;
     public ActiveEntity enemyStats_;
     private float movementSteps_;
@@ -19,6 +20,8 @@ public class EnemyController : MonoBehaviour {
     public bool isActive_;
     public bool debugWaiter_;
 
+
+    public Directions currentFacing_ = Directions.RIGHT;
     private int attemptedMoves_ = 0;
 
 	// Use this for initialization
@@ -113,6 +116,14 @@ public class EnemyController : MonoBehaviour {
         else {
             EndTurn();
         }
+        StartCoroutine(FailSafe());
+    }
+
+    IEnumerator FailSafe() {
+        // If turn hasn't ended by now, force end it
+        yield return new WaitForSeconds(2f);
+        EndTurn();
+
     }
 
     void MoveInDirection(int direction) {
@@ -160,11 +171,12 @@ public class EnemyController : MonoBehaviour {
         TurnManager._Instance.NextTurn(enemyStats_);
         attemptedMoves_ = 0;
         isMoving_ = false;
+        StopAllCoroutines();
     }
 
     
 
-    public bool GetValidMove(Vector3 goal) {
+    public bool GetValidMove(Vector3 goal, bool checkForEnemy = true) {
 
         // Quit if we've attempted to move more than 4 times
         if (attemptedMoves_ > 4) {
@@ -181,12 +193,14 @@ public class EnemyController : MonoBehaviour {
             return true;
         }
         else {
-            //Debug.Log("Invalid move! Checking for enemy");
-            PlayerController enemy = DetectDestroyable(colls);
-            if (enemy != null) {
-                StartCoroutine(Attack(enemy));
-                isMoving_ = true;
-            }
+            if (checkForEnemy) {
+                //Debug.Log("Invalid move! Checking for enemy");
+                PlayerController enemy = DetectDestroyable(colls);
+                if (enemy != null) {
+                    StartCoroutine(Attack(enemy));
+                    isMoving_ = true;
+                }
+            };
             return false;
         }
 
@@ -222,11 +236,13 @@ public class EnemyController : MonoBehaviour {
             armorPierce = (armorPierce + 1) * 2;
             enemyStats.AttemptDoDamage(damage, armorPierce);
             characterAnimator_.SetTrigger("Critical");
+            enemy.characterAnimator_.SetTrigger("Stumble");
         }
         else {
             if (!enemyStats.AttemptDodge(attackRoll + enemyStats_.attackRating_)) {
                 enemyStats.AttemptDoDamage(damage, armorPierce);
                 characterAnimator_.SetTrigger("Swing");
+                enemy.characterAnimator_.SetTrigger("Stumble");
             }
             else {
                 characterAnimator_.SetTrigger("Swing");
@@ -244,10 +260,10 @@ public class EnemyController : MonoBehaviour {
     }
 
 
-    public IEnumerator SmoothMove(Vector3 position, Vector3 direction) {
+    public IEnumerator SmoothMove(Vector3 position, bool animateAndEndTurn = true) {
         isMoving_ = true;
-        characterAnimator_.SetTrigger("Walk");
-        enemyObj_.transform.localRotation = Quaternion.Euler(direction.x, direction.y,direction.z);
+        if (animateAndEndTurn) { characterAnimator_.SetTrigger("Walk"); };
+        //enemyObj_.transform.localRotation = Quaternion.Euler(direction.x, direction.y,direction.z);
        Vector3 velocity = Vector3.zero;
         while (true) {
             enemyObj_.transform.position = Vector3.SmoothDamp(enemyObj_.transform.position, position, ref velocity, 0.1f);
@@ -258,34 +274,49 @@ public class EnemyController : MonoBehaviour {
         yield return new WaitForEndOfFrame();
         enemyObj_.transform.position = position;
         isMoving_ = false;
-        EndTurn();
+        if (animateAndEndTurn) { EndTurn(); };
 
     }
 
-    public Vector3 MoveUp(bool move = false) {
+    public Vector3 MoveUp(bool move = false, bool changeDirection = true, bool animate = true) {
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, movementSteps_), new Vector3(0f, -90f, 90f)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, movementSteps_), animate));
         }
+        if (changeDirection) {
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
+            currentFacing_ = Directions.UP;
+        };
         return enemyObj_.transform.position + new Vector3(0f, 0f, movementSteps_);
     }
-    public Vector3 MoveDown(bool move = false) {
+    public Vector3 MoveDown(bool move = false, bool changeDirection = true, bool animate = true) {
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, -movementSteps_), new Vector3(180f, -90f, 90f)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(0f, 0f, -movementSteps_), animate));
         }
+        if (changeDirection) {
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+            currentFacing_ = Directions.DOWN;
+        };
         return enemyObj_.transform.position + new Vector3(0f, 0f, -movementSteps_);
     }
-    public Vector3 MoveLeft(bool move = false) {
+    public Vector3 MoveLeft(bool move = false, bool changeDirection = true, bool animate = true) {
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f), new Vector3(90f, -90f, 90f)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f), animate));
         }
+        if (changeDirection) {
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, -180f, 0f));
+            currentFacing_ = Directions.LEFT;
+        };
         return enemyObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f);
     }
-    public Vector3 MoveRight(bool move = false) {
+    public Vector3 MoveRight(bool move = false, bool changeDirection = true, bool animate = true) {
 
         if (move) {
-            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(movementSteps_, 0f, 0f), new Vector3(-90f, -90f, 90f)));
+            StartCoroutine(SmoothMove(enemyObj_.transform.position + new Vector3(movementSteps_, 0f, 0f), animate));
         }
-
+        if (changeDirection) {
+            avatar_.transform.localRotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+            currentFacing_ = Directions.RIGHT;
+        };
         return enemyObj_.transform.position + new Vector3(movementSteps_, 0f, 0f);
     }
 

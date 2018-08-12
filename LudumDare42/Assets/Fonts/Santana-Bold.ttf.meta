@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 84db0d80ca0095a4790e4abf9efffa0a
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Santana
+  fontNames:
+  - Santana
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 31aad11ee4081b745b185a34735465e0, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
