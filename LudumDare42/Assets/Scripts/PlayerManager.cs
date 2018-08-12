@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour {
     public DestroyableEntity class_;
 
     public static string name_ = "";
-    public static int currentPlayerLevel_ = 20;
+    public static int currentPlayerLevel_ = 1;
     public static int playerXP_ = 0;
 
     void Awake() {
@@ -49,7 +49,7 @@ public class PlayerManager : MonoBehaviour {
     void Start() {
 
         name_ = PlayerPrefs.GetString("PlayerName");
-        //currentPlayerLevel_ = Mathf.Clamp(PlayerPrefs.GetInt("PlayerLevel"), 1, 99);
+        currentPlayerLevel_ = Mathf.Clamp(PlayerPrefs.GetInt("PlayerLevel"), 1, 99);
         playerXP_ = PlayerPrefs.GetInt("PlayerExperience");
 
         // Make random player name

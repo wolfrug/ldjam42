@@ -2519,7 +2519,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Northern Gauntlet
+  m_Text: Central Crossroad
 --- !u!114 &114398830451424074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2660,6 +2660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera_: {fileID: 0}
+  totalPlayerTurnCount: 0
 --- !u!114 &114434060932123982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3233,7 +3234,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Difficulty: Medium'
+  m_Text: 'Difficulty: Easy'
 --- !u!114 &114659565361333452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3803,6 +3804,10 @@ MonoBehaviour:
   playerNames_:
   - Asuka
   - Royo
+  classes_:
+  - {fileID: 11400000, guid: 3ab7659a7f98d714ab5500d51ed9a976, type: 2}
+  - {fileID: 11400000, guid: 906c26dd71498da40864b097dee1e8b1, type: 2}
+  - {fileID: 11400000, guid: a6e3f5499812d2542b004147e598b398, type: 2}
   class_: {fileID: 11400000, guid: a6e3f5499812d2542b004147e598b398, type: 2}
 --- !u!114 &114900389017187320
 MonoBehaviour:
@@ -3908,7 +3913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fef72119be0c9a4099889b3150b8177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  instance_: {fileID: 0}
+  enemiesKilled_: 0
 --- !u!114 &114957275648113344
 MonoBehaviour:
   m_ObjectHideFlags: 1

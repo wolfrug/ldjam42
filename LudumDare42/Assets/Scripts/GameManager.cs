@@ -30,11 +30,11 @@ public class GameManager : MonoBehaviour {
 
         DontDestroyOnLoad(gameObject);
 
-        LoadLevel("startscene");
+       
 
     }
 
-    public void PlayMusic(int song = -1) {
+        public void PlayMusic(int song = -1) {
         //-1 = play random
 
         AudioClip targetclip;
@@ -70,6 +70,9 @@ public class GameManager : MonoBehaviour {
         if (lastLevel != "") {
             LoadLevel(lastLevel);
         }
+        else {
+            LoadLevel("level1");
+        }
 
     }
 
@@ -79,7 +82,7 @@ public class GameManager : MonoBehaviour {
             LoadLevel(currentScene_ + 1, true);
         }
         else {
-            LoadLevel(nextLevel_);
+            LoadLevel(nextLevel_, true);
             nextLevel_ = "";
         }
 
@@ -126,10 +129,11 @@ public class GameManager : MonoBehaviour {
     }
 
     public void ResetPlayer() {
-        PlayerPrefs.SetInt("LastLevel", 0);
+        PlayerPrefs.SetString("LastLevel", "");
         PlayerPrefs.SetString("PlayerName", "");
         PlayerPrefs.SetInt("PlayerLevel", 1);
         PlayerPrefs.SetInt("PlayerExperience", 0);
+        PlayerPrefs.SetString("PlayerClass", "");
 
     }
 
@@ -147,7 +151,8 @@ public class GameManager : MonoBehaviour {
 	void Start () {
         // Play music!
         PlayMusic();
-	}
+        SceneManager.LoadSceneAsync("startscene");
+    }
 	
 	// Update is called once per frame
 	void Update () {
