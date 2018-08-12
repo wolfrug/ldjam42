@@ -11,14 +11,15 @@ public class PlayerManager : MonoBehaviour {
     public PlayerController player_;
 
     public string[] playerNames_;
-    
+    public DestroyableEntity[] classes_;
 
-   
+
+
 
     public DestroyableEntity class_;
 
     public static string name_ = "";
-    public static int currentPlayerLevel_ = 1;
+    public static int currentPlayerLevel_ = 20;
     public static int playerXP_ = 0;
 
     void Awake() {
@@ -28,19 +29,37 @@ public class PlayerManager : MonoBehaviour {
         else if (instance_ != this) {
             Destroy(gameObject);
         }
+
+        if (PlayerPrefs.GetString("PlayerClass") == "") {
+            class_ = classes_[Random.Range(0, classes_.Length)];
+            SkillsManager.instance_.playerClass_ = class_;
+            PlayerPrefs.SetString("PlayerClass", class_.name_);
+        }
+        else {
+            string pclass = PlayerPrefs.GetString("PlayerClass");
+            foreach (DestroyableEntity classname in classes_) {
+                if (classname.name_ == pclass) {
+                    class_ = classname;
+                    SkillsManager.instance_.playerClass_ = class_;
+                };
+            }
+        }
     }
 
     void Start() {
 
         name_ = PlayerPrefs.GetString("PlayerName");
-        currentPlayerLevel_ = Mathf.Clamp(PlayerPrefs.GetInt("PlayerLevel"), 1, 99);
-        playerXP_ = PlayerPrefs.GetInt("PlayerXP");
+        //currentPlayerLevel_ = Mathf.Clamp(PlayerPrefs.GetInt("PlayerLevel"), 1, 99);
+        playerXP_ = PlayerPrefs.GetInt("PlayerExperience");
 
         // Make random player name
         if (name_ == "") {
              name_ = playerNames_[Random.Range(0, playerNames_.Length)];
             PlayerPrefs.SetString("PlayerName", name_);
         }
+        // Pick 3 random skills
+
+
         MainUIManager.instance_.playerName_.text = name_;
         // Set class name
         MainUIManager.instance_.playerClass_.text = class_.name_;

@@ -6,18 +6,48 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/managerSCene.unity
+    guid: 00b06ba152fe7ae47a1e168d2e61cb78
+  - enabled: 1
     path: Assets/Scenes/startscene.unity
     guid: 8d86a8ff546498c488677d7a22f7452f
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/Scenes/managerSCene.unity
-    guid: 00b06ba152fe7ae47a1e168d2e61cb78
-  - enabled: 1
     path: Assets/Scenes/level1.unity
     guid: 4fbf5417aaab8de49aed08e4f4c507c4
   - enabled: 1
     path: Assets/Scenes/level2_north.unity
     guid: b826710be9d6fcc4ca016dcf19747e62
+  - enabled: 1
+    path: Assets/Scenes/level3_northwest.unity
+    guid: 6b1719752145b2d4893e3f51debbcdf8
+  - enabled: 1
+    path: Assets/Scenes/level2_east.unity
+    guid: b35d4633a0b1ab545844242d363e6e5d
+  - enabled: 1
+    path: Assets/Scenes/level2_south.unity
+    guid: 3c297b5f5a5d9ec4f9dc763fe3f38181
+  - enabled: 1
+    path: Assets/Scenes/level2_west.unity
+    guid: be1dbf4a331c94040989423b2e4f0c96
+  - enabled: 1
+    path: Assets/Scenes/level3_northeast.unity
+    guid: 7defc0b1c33eae147968920fdc00912f
+  - enabled: 1
+    path: Assets/Scenes/level3_northnorth.unity
+    guid: c2bcfae3d4bd7e94b91e479a52f66757
+  - enabled: 1
+    path: Assets/Scenes/level3_westwest.unity
+    guid: 8e415377f0f077a479c302f454d15ccd
+  - enabled: 1
+    path: Assets/Scenes/level4_knightboss.unity
+    guid: 89d32e77b61aed243a6f5aad6a8c3588
+  - enabled: 1
+    path: Assets/Scenes/level4_ninjaboss.unity
+    guid: 2688cf1092b42fd42a42917d0ad53fcb
+  - enabled: 1
+    path: Assets/Scenes/endScene.unity
+    guid: ec32c38a4d2240749b3910c7fabde995
   m_configObjects: {}

@@ -26,6 +26,7 @@ public class PlayerSkill : ScriptableObject {
     public int unlocksAtLevel_;
 
     public Directions moveTargetInDirection_ = Directions.NONE;
+    public bool moveSelf = false;
     public int squaresToMove_;
     public string moveAnimationName_ = "Kick";
 
@@ -77,7 +78,11 @@ public class PlayerSkill : ScriptableObject {
                 TurnManager._Instance.NextTurn(target);
             }
             if (moveTargetInDirection_ != Directions.NONE) {
-                target.playerController_.player_Attack.AddListener(MoveTarget);
+                if (!moveSelf) {
+                    target.playerController_.player_Attack.AddListener(MoveTarget);
+                }else {
+                    target.playerController_.player_Move.AddListener(MoveTarget);
+                }
             }
 
         };
@@ -147,6 +152,48 @@ public class PlayerSkill : ScriptableObject {
         SkillsManager.instance_.player_.player_Attack.RemoveAllListeners();
 
     }
+    public void MoveTarget(Directions Playerdirection, bool success) {
+
+        // Attempts to move the target somehow when activated
+        PlayerController player = FindObjectOfType<PlayerController>();
+
+        int direction = DirectionsToInt(Playerdirection, player);
+
+        if (direction == 0) {
+            //Debug.Log("Up!");
+            if (player.GetValidMove(player.MoveUp(), false)) {
+                player.MoveUp(true, false, false);
+            }
+        }
+
+        if (direction == 1) {
+            //Debug.Log("Down!");
+            if (player.GetValidMove(player.MoveDown(), false)) {
+                player.MoveDown(true, false, false);
+            }
+        }
+        if (direction == 2) {
+            //Debug.Log("Left!");
+            if (player.GetValidMove(player.MoveLeft(), false)) {
+                player.MoveLeft(true, false, false);
+            }
+        }
+
+        if (direction == 3) {
+            //Debug.Log("Right!");
+            if (player.GetValidMove(player.MoveRight(), false)) {
+                player.MoveRight(true, false, false);
+            }
+        }
+
+        if (moveAnimationName_ != "") {
+            player.characterAnimator_.SetTrigger(moveAnimationName_);
+        };
+
+        SkillsManager.instance_.player_.player_Move.RemoveAllListeners();
+
+    }
+
 
     Directions GetOpposite(Directions trg) {
         switch (trg) {

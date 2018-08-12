@@ -65,8 +65,8 @@ public class MainUIManager : MonoBehaviour {
     public void LevelComplete() {
 
         levelCompletePanel_.SetActive(true);
-        int gainedXP = PlayerManager.playerXP_ - PlayerPrefs.GetInt("PlayerExperience");
-        levelCompleteStats_.text = "Level Complete!\n\nExperience gained: " + gainedXP.ToString() + "\nTurns played: " + TurnManager._Instance.totalTurnCount.ToString();
+        int gainedXP = Mathf.Clamp(PlayerManager.playerXP_ - PlayerPrefs.GetInt("PlayerExperience"), 0, 999);
+        levelCompleteStats_.text = "Level Complete!\n\nExperience gained: " + gainedXP.ToString() + "\nEnemies killed: " + LevelManager.instance_.enemiesKilled_.ToString() + "\nTurns taken: " + TurnManager._Instance.totalPlayerTurnCount.ToString();
 
     }
 

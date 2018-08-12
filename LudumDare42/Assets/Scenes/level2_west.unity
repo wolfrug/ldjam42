@@ -3359,6 +3359,11 @@ Prefab:
       propertyPath: m_Text
       value: Western Hallway
       objectReference: {fileID: 0}
+    - target: {fileID: 114653767975205252, guid: 2bf38b7591854724d850c2d0a683ef26,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Difficulty: Easy'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}
   m_IsPrefabAsset: 0

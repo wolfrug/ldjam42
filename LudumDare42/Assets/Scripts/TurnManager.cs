@@ -11,6 +11,7 @@ public class TurnManager : MonoBehaviour {
     private ActiveEntity[] allEntities_;
     private int currentIndex_ = 0;
     private int totalTurnCount_ = 0;
+    public int totalPlayerTurnCount = 0;
 
     public ActiveEntity currentActive {
 
@@ -53,6 +54,9 @@ public class TurnManager : MonoBehaviour {
     }
 
     void StartNewTurn() {
+
+        totalPlayerTurnCount += 1;
+
         StopAllCoroutines();
         turnOrder_.Clear();
         turnOrder_.Capacity = 0;
@@ -124,7 +128,7 @@ public class TurnManager : MonoBehaviour {
     }
 
     public void EndGame() {
-        Debug.LogWarning("FINISHED GAME: ALL DEAD");
+        GameManager.instance_.GameOverDeath();
     }
 
 }

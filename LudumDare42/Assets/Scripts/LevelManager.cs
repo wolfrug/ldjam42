@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour {
 
-    public LevelManager instance_;
+    public static LevelManager instance_;
+    public int enemiesKilled_;
 
     private List<GridTrigger> exits_ = new List<GridTrigger> { };
 
@@ -28,9 +29,11 @@ public class LevelManager : MonoBehaviour {
                 exits_.Add(trigger);
             }
         }
-        // Listen to player death
-        PlayerController player = FindObjectOfType<PlayerController>();
-        player.player_dead.AddListener(PlayerDead);
+        
+        // Listen to enemy death
+        foreach (EnemyController controller in FindObjectsOfType<EnemyController>()) {
+            controller.unit_dead.AddListener(UnitDead);
+        }
 
 	}
 
@@ -39,8 +42,12 @@ public class LevelManager : MonoBehaviour {
         MainUIManager.instance_.LevelComplete();
     }
 	
-    void PlayerDead(PlayerController player) {
-        MainUIManager.instance_.GameOverPanel();
+    void UnitDead(EnemyController controller) {
+        enemiesKilled_ += 1;
+        if (controller.enemyStats_.reference_.name_ == "Enemy Knight" || controller.enemyStats_.reference_.name_ == "Enemy Ninja") {
+            // Killed the bad guy! You win!
+            FinishLevelAndSetNextLevel("endScene");
+        };
     }
 
     public void FinishLevelAndSetNextLevel(string sceneName) {

@@ -528,10 +528,10 @@ Transform:
   - {fileID: 93576740}
   - {fileID: 1380165890}
   - {fileID: 297542091}
-  - {fileID: 1929396445}
   - {fileID: 539261133}
   - {fileID: 746753882}
   - {fileID: 580166114}
+  - {fileID: 1929396445}
   - {fileID: 621424444}
   - {fileID: 1840001246}
   - {fileID: 1502274121}
@@ -1176,6 +1176,11 @@ Prefab:
         type: 2}
       propertyPath: m_Text
       value: North Corridor
+      objectReference: {fileID: 0}
+    - target: {fileID: 114653767975205252, guid: 2bf38b7591854724d850c2d0a683ef26,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Difficulty: Easy'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}

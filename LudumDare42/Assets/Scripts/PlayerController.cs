@@ -10,9 +10,6 @@ public class AttackEvent : UnityEvent<EnemyController, string> {
 [System.Serializable]
 public class MoveEvent : UnityEvent<Directions, bool> {
 }
-[System.Serializable]
-public class DeathEvent : UnityEvent<PlayerController> {
-}
 
 public class PlayerController : MonoBehaviour {
 
@@ -34,8 +31,6 @@ public class PlayerController : MonoBehaviour {
     public AttackEvent player_Attack = new AttackEvent();
     // Player move returns attempted direction and success/not 
     public MoveEvent player_Move = new MoveEvent();
-
-    public DeathEvent player_dead = new DeathEvent();
 
     // Use this for initialization
     void Awake() {
@@ -142,7 +137,7 @@ public class PlayerController : MonoBehaviour {
     }
 
 
-    public IEnumerator SmoothMove(Vector3 position) {
+    public IEnumerator SmoothMove(Vector3 position, bool changefacing = true, bool endturn = true) {
         isMoving_ = true;
         Vector3 velocity = Vector3.zero;
         characterAnimator_.SetTrigger("Walk");
@@ -154,13 +149,13 @@ public class PlayerController : MonoBehaviour {
         }
         playerObj_.transform.position = position;
         isMoving_ = false;
-        EndTurn();
+        if (endturn) { EndTurn(); };
 
     }
 
-    public Vector3 MoveUp(bool move = false, bool changeFacing = true) {
+    public Vector3 MoveUp(bool move = false, bool changeFacing = true, bool endTurn = true) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_), changeFacing, endTurn));
         }
         if (changeFacing) {
             currentFacing_ = Directions.UP;
@@ -168,9 +163,9 @@ public class PlayerController : MonoBehaviour {
         }
         return playerObj_.transform.position + new Vector3(0f, 0f, movementSteps_);
     }
-    public Vector3 MoveDown(bool move = false, bool changeFacing = true) {
+    public Vector3 MoveDown(bool move = false, bool changeFacing = true, bool endTurn = true) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_), changeFacing, endTurn));
         }
         if (changeFacing) {
             currentFacing_ = Directions.DOWN;
@@ -178,9 +173,9 @@ public class PlayerController : MonoBehaviour {
         };
         return playerObj_.transform.position + new Vector3(0f, 0f, -movementSteps_);
     }
-    public Vector3 MoveLeft(bool move = false, bool changeFacing = true) {
+    public Vector3 MoveLeft(bool move = false, bool changeFacing = true, bool endTurn = true) {
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f), changeFacing, endTurn));
         }
         if (changeFacing) {
             currentFacing_ = Directions.LEFT;
@@ -188,10 +183,10 @@ public class PlayerController : MonoBehaviour {
         }
         return playerObj_.transform.position + new Vector3(-movementSteps_, 0f, 0f);
     }
-    public Vector3 MoveRight(bool move = false, bool changeFacing = true) {
+    public Vector3 MoveRight(bool move = false, bool changeFacing = true, bool endTurn = true) {
 
         if (move) {
-            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f)));
+            StartCoroutine(SmoothMove(playerObj_.transform.position + new Vector3(movementSteps_, 0f, 0f), changeFacing, endTurn));
         }
         if (changeFacing) {
             currentFacing_ = Directions.RIGHT;

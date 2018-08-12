@@ -9,6 +9,7 @@ public class SkillsManager : MonoBehaviour {
 
     public PlayerController player_;
     public ActiveEntity playerStats_;
+   
 
     public GameObject buttonPrefab_;
     public Transform parent_;
@@ -28,7 +29,7 @@ public class SkillsManager : MonoBehaviour {
 
         player_ = FindObjectOfType<PlayerController>();
         playerStats_ = player_.playerStats_;
-        playerClass_ = PlayerManager.instance_.class_;
+        
         UpdateSkills();
 
 	}

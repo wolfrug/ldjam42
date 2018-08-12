@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47ca09822b0c56d48afb32cf745256b6, type: 3}
+  m_Name: Class_Samurai
+  m_EditorClassIdentifier: 
+  name_: Samurai
+  health_: 10
+  dodge_: 0.1
+  attackRating_: 0.5
+  criticalChance_: 0.1
+  damage_: 1
+  armor_: 0
+  armorPiercing_: 0
+  speed_: 2
+  energy_: 5
+  healthLevelCoefficient_: 0.3
+  dodgeLevelCoefficient: 0.1
+  attackRatingCoefficient: 0.25
+  criticalChanceCoefficient: 0.001
+  damageCoefficient: 0.25
+  armorCoefficient: 0.01
+  apCoefficient: 0
+  speedCoefficient: 0.1
+  energyCoefficient: 0.1
+  skills_:
+  - {fileID: 11400000, guid: 320faa58bea56674ba5e4c6a0e25a08c, type: 2}
+  - {fileID: 11400000, guid: aa425407ca4869c4a8c94091218913e8, type: 2}
+  - {fileID: 11400000, guid: f5b80b8e57804df429aa8c1ea8697646, type: 2}

@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour {
 
         DontDestroyOnLoad(gameObject);
 
+        LoadLevel("startscene");
+
     }
 
     public void PlayMusic(int song = -1) {
@@ -60,6 +62,15 @@ public class GameManager : MonoBehaviour {
 
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
         
+    }
+
+    public void ContinueFromLastLevel() {
+
+        string lastLevel = PlayerPrefs.GetString("LastLevel");
+        if (lastLevel != "") {
+            LoadLevel(lastLevel);
+        }
+
     }
 
     public void LoadNextLevel() {
@@ -93,7 +104,7 @@ public class GameManager : MonoBehaviour {
 
         if (level != "") {
             if (saveStats) {
-                PlayerPrefs.SetInt("LastLevel", FindSceneIndex(level));
+                PlayerPrefs.SetString("LastLevel", level);
                 PlayerPrefs.SetInt("PlayerLevel", PlayerManager.currentPlayerLevel_);
                 PlayerPrefs.SetInt("PlayerExperience", PlayerManager.playerXP_);
             }

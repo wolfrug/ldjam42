@@ -329,7 +329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &101363391
 RectTransform:
   m_ObjectHideFlags: 0
@@ -631,6 +631,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audio_: {fileID: 679140372}
+  scenes_: []
+  currentScene_: 0
   musics_:
   - {fileID: 8300000, guid: 9c8be3f3bf103c44cb523445760fe2f0, type: 3}
   - {fileID: 8300000, guid: bdeac03974053e94d9777e4fa6e7a73e, type: 3}
@@ -639,6 +641,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cff438bd90038c64cb1e35c2e025ca3c, type: 3}
   deathSounds_: []
   missSounds_: []
+  nextLevel_: 
 --- !u!4 &679140374
 Transform:
   m_ObjectHideFlags: 0
@@ -844,12 +847,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: d34e3f15d8bede4488f2ecf9d338b96f, type: 3}
-    m_FontSize: 35
+    m_Font: {fileID: 12800000, guid: 31aad11ee4081b745b185a34735465e0, type: 3}
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 45
+    m_MaxSize: 50
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -858,12 +861,14 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Samurai Crush
 
-    Made for Ludum Dare 42, by wolfrug
+    Made for Ludum Dare 42 Compo, by wolfrug, in 48 hours.
 
-    Theme "Running out of space"
+    Theme "Running out of space" (not very well utilized)
 
 
-    Samurai font by fontilizer.com'
+    Samurai font by fontilizer.com
+
+    Santana font by DaFont'
 --- !u!222 &943730341
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1683,7 +1688,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: SAMURAI CRUSH
+  m_Text: SAMURAI DELVE
 --- !u!222 &2051449059
 CanvasRenderer:
   m_ObjectHideFlags: 0

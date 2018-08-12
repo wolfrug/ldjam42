@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class EnemyController : MonoBehaviour {
+[System.Serializable]
+public class DeathEvent : UnityEvent<EnemyController> {
+}
+
+    public class EnemyController : MonoBehaviour {
 
     public GameObject enemyObj_;
     public GameObject avatar_;
@@ -20,6 +25,7 @@ public class EnemyController : MonoBehaviour {
     public bool isActive_;
     public bool debugWaiter_;
 
+    public DeathEvent unit_dead = new DeathEvent();
 
     public Directions currentFacing_ = Directions.RIGHT;
     private int attemptedMoves_ = 0;
@@ -330,6 +336,8 @@ public class EnemyController : MonoBehaviour {
         rb.gameObject.layer = 9;
         dead_ = true;
         characterAnimator_.SetTrigger("Die");
+        unit_dead.Invoke(this);
+        
     }
 
 }

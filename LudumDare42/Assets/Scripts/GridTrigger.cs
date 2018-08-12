@@ -8,7 +8,7 @@ public enum Triggerers {
     NONE = 0000,
     PLAYER = 1000,
     ENEMY = 2000,
-    //WALL = 3000
+    EITHER = 3000
 
 }
 
@@ -32,6 +32,13 @@ public class GridTrigger : MonoBehaviour {
 
         ActiveEntity entity = coll.gameObject.GetComponentInParent<ActiveEntity>();
         if (entity != null) {
+
+            if (triggerer_ == Triggerers.EITHER) {
+                grid_triggered.Invoke(entity, this);
+                Debug.Log("Triggered by either!");
+                return;
+            }
+
             if (entity.playerController_ != null) {
                 isPlayer = true;
             }
