@@ -22,10 +22,10 @@ MonoBehaviour:
   speed_: 2
   energy_: 5
   healthLevelCoefficient_: 0.3
-  dodgeLevelCoefficient: 0.1
-  attackRatingCoefficient: 0.25
+  dodgeLevelCoefficient: 0.13
+  attackRatingCoefficient: 0.1
   criticalChanceCoefficient: 0.001
-  damageCoefficient: 0.25
+  damageCoefficient: 0.15
   armorCoefficient: 0.01
   apCoefficient: 0
   speedCoefficient: 0.1

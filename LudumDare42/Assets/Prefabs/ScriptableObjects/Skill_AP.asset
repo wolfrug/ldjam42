@@ -16,14 +16,15 @@ MonoBehaviour:
   turnDuration_: 1
   energyCost_: 1
   skipsPlayerTurn: 0
-  unlocksAtLevel_: 15
+  unlocksAtLevel_: 11
   moveTargetInDirection_: 0
+  moveSelf: 0
   squaresToMove_: 0
   moveAnimationName_: Kick
   health_: 0
-  dodge_: 1
+  dodge_: 0
   attackRating_: 0
-  criticalChance_: 1
+  criticalChance_: 0
   damage_: 0
   armor_: 0
   armorPiercing_: 3

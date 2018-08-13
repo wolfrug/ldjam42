@@ -9,6 +9,7 @@ public class TurnManager : MonoBehaviour {
     public CameraFollow mainCamera_;
     private List<ActiveEntity> turnOrder_ = new List<ActiveEntity> { };
     private ActiveEntity[] allEntities_;
+    private ActiveEntity playerEntity_;
     private int currentIndex_ = 0;
     private int totalTurnCount_ = 0;
     public int totalPlayerTurnCount = 0;
@@ -50,6 +51,7 @@ public class TurnManager : MonoBehaviour {
 
         //StartCoroutine(UpdateTurnOrder());
         mainCamera_ = FindObjectOfType<CameraFollow>();
+        playerEntity_ = FindObjectOfType<PlayerController>().playerStats_;
 
     }
 
@@ -108,6 +110,7 @@ public class TurnManager : MonoBehaviour {
                 totalTurnCount_ += 1;
                 if (currentActive != null) {
                     //mainCamera_.target = currentActive.gameObject;
+                    if (currentActive != playerEntity_) { Time.timeScale = 2f; } else { Time.timeScale = 1f; };
                     currentActive.controllerActive = true;
                 }
                 else {

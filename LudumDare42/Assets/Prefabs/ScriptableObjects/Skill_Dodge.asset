@@ -13,17 +13,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name_: Evasive
   description_: Increases Dodge
-  turnDuration_: 1
+  turnDuration_: 5
   energyCost_: 1
   skipsPlayerTurn: 0
   unlocksAtLevel_: 0
   moveTargetInDirection_: 0
+  moveSelf: 0
   squaresToMove_: 0
   moveAnimationName_: Kick
   health_: 0
   dodge_: 1
   attackRating_: 0
-  criticalChance_: 1
+  criticalChance_: 0
   damage_: 0
   armor_: 0
   armorPiercing_: 0

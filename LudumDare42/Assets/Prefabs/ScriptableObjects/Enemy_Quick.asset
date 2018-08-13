@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name_: Slippery Goon
   health_: 5
-  dodge_: 1
+  dodge_: 2
   attackRating_: 0.6
   criticalChance_: 0.25
   damage_: 3

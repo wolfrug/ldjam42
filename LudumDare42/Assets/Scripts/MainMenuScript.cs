@@ -11,7 +11,7 @@ public class MainMenuScript : MonoBehaviour {
 	void Start () {
 		
         string lastLevel = PlayerPrefs.GetString("LastLevel");
-        if (lastLevel != "") {
+        if (lastLevel != "" && continuegame != null) {
             continuegame.interactable = true;
                 }
 
@@ -29,6 +29,11 @@ public class MainMenuScript : MonoBehaviour {
 
     public void ContinueApp() {
         GameManager.instance_.ContinueFromLastLevel();
+    }
+
+    public void BackToMainMenu() {
+
+        GameManager.instance_.LoadLevel("startscene");
     }
 
     public void StartApp() {

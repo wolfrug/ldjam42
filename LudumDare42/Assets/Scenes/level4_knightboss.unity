@@ -4537,17 +4537,17 @@ Prefab:
     - target: {fileID: 224189104479048612, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.44755
+      value: 63.511448
       objectReference: {fileID: 0}
     - target: {fileID: 224895382337449524, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -32.223774
+      value: -31.755724
       objectReference: {fileID: 0}
     - target: {fileID: 224895382337449524, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.44755
+      value: 63.511448
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}
@@ -9657,7 +9657,7 @@ MonoBehaviour:
   luaBindingName: flowchart
 --- !u!114 &1447466360
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1447466358}
@@ -9668,7 +9668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 1
   indentLevel: 0
-  storyText: We meet again! Your reign of terror comes to an end now, Knight!
+  storyText: We meet again! Your reign of terror comes to an end now, Knight! {w=3}
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -9677,7 +9677,7 @@ MonoBehaviour:
   showCount: 1
   extendPrevious: 0
   fadeWhenDone: 1
-  waitForClick: 1
+  waitForClick: 0
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 0}

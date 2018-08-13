@@ -6493,8 +6493,10 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks: []
-  selectedCommands: []
+  selectedBlocks:
+  - {fileID: 1136291321}
+  selectedCommands:
+  - {fileID: 1136291320}
   variables: []
   description: 
   stepPause: 0
@@ -6520,7 +6522,7 @@ MonoBehaviour:
   itemId: 1
   indentLevel: 0
   storyText: I can hear you, even though you're trying to be all ninjutsu. Come and
-    fight!
+    fight! {w=3}
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -6529,7 +6531,7 @@ MonoBehaviour:
   showCount: 1
   extendPrevious: 0
   fadeWhenDone: 1
-  waitForClick: 1
+  waitForClick: 0
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 1431573940}

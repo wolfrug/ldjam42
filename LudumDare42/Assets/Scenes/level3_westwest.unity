@@ -8682,17 +8682,22 @@ Prefab:
     - target: {fileID: 224189104479048612, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.44755
+      value: 63.511448
       objectReference: {fileID: 0}
     - target: {fileID: 224895382337449524, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -32.223774
+      value: -31.755724
       objectReference: {fileID: 0}
     - target: {fileID: 224895382337449524, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.44755
+      value: 63.511448
+      objectReference: {fileID: 0}
+    - target: {fileID: 114653767975205252, guid: 2bf38b7591854724d850c2d0a683ef26,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Difficulty: Medium'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}
@@ -13153,7 +13158,7 @@ MonoBehaviour:
   luaBindingName: flowchart
 --- !u!114 &1429673282
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1429673280}
@@ -13165,7 +13170,7 @@ MonoBehaviour:
   itemId: 1
   indentLevel: 0
   storyText: Time for a dance, you say? You're not exactly dressed for it are you,
-    tin cans? Come here and let me carve you up!
+    tin cans? Come here and let me carve you up! {w=3}
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -13174,7 +13179,7 @@ MonoBehaviour:
   showCount: 1
   extendPrevious: 0
   fadeWhenDone: 1
-  waitForClick: 1
+  waitForClick: 0
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 1087129593}
@@ -13193,7 +13198,7 @@ MonoBehaviour:
   nodeRect:
     serializedVersion: 2
     x: 339
-    y: 112
+    y: 114
     width: 120
     height: 40
   tint: {r: 1, g: 1, b: 1, a: 1}

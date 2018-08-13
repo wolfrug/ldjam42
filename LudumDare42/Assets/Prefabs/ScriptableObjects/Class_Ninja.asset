@@ -21,11 +21,11 @@ MonoBehaviour:
   armorPiercing_: 0
   speed_: 2
   energy_: 5
-  healthLevelCoefficient_: 0.2
+  healthLevelCoefficient_: 0.1
   dodgeLevelCoefficient: 0.25
-  attackRatingCoefficient: 0.25
+  attackRatingCoefficient: 0.15
   criticalChanceCoefficient: 0.001
-  damageCoefficient: 0.35
+  damageCoefficient: 0.2
   armorCoefficient: 0
   apCoefficient: 0
   speedCoefficient: 0.1

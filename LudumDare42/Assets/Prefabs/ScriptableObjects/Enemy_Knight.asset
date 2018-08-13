@@ -14,10 +14,10 @@ MonoBehaviour:
   name_: Enemy Knight
   health_: 15
   dodge_: 1
-  attackRating_: 1.5
+  attackRating_: 2.5
   criticalChance_: 0.25
   damage_: 5
-  armor_: 2
+  armor_: 3
   armorPiercing_: 1
   speed_: 1.5
   energy_: 0

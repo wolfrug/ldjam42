@@ -13,11 +13,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name_: Kick
   description_: Kicks the enemy back!
-  turnDuration_: 0
+  turnDuration_: 1
   energyCost_: 1
   skipsPlayerTurn: 0
   unlocksAtLevel_: 0
   moveTargetInDirection_: 5000
+  moveSelf: 0
   squaresToMove_: 1
   moveAnimationName_: Kick
   health_: 0

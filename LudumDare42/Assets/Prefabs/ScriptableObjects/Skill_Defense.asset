@@ -13,11 +13,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name_: Shield
   description_: Increases Armor
-  turnDuration_: 1
+  turnDuration_: 5
   energyCost_: 1
   skipsPlayerTurn: 0
   unlocksAtLevel_: 8
   moveTargetInDirection_: 0
+  moveSelf: 0
   squaresToMove_: 0
   moveAnimationName_: Kick
   health_: 0

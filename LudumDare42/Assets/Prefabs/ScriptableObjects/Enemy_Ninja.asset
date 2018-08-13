@@ -14,7 +14,7 @@ MonoBehaviour:
   name_: Enemy Ninja
   health_: 15
   dodge_: 2.5
-  attackRating_: 2
+  attackRating_: 4
   criticalChance_: 0.25
   damage_: 5
   armor_: 1

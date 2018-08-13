@@ -1185,17 +1185,17 @@ Prefab:
     - target: {fileID: 224189104479048612, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.44755
+      value: 63.511448
       objectReference: {fileID: 0}
     - target: {fileID: 224895382337449524, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -32.223774
+      value: -31.755724
       objectReference: {fileID: 0}
     - target: {fileID: 224895382337449524, guid: 2bf38b7591854724d850c2d0a683ef26,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 64.44755
+      value: 63.511448
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bf38b7591854724d850c2d0a683ef26, type: 2}
@@ -1316,7 +1316,7 @@ Prefab:
     - target: {fileID: 114435609345250608, guid: 65cef3f72a4e2824aa82b46b481dfae3,
         type: 2}
       propertyPath: grid_triggered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: level3_north
+      value: level3_northnorth
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65cef3f72a4e2824aa82b46b481dfae3, type: 2}
@@ -2579,8 +2579,10 @@ MonoBehaviour:
     y: -340
     width: 1114
     height: 859
-  selectedBlocks: []
-  selectedCommands: []
+  selectedBlocks:
+  - {fileID: 623371976}
+  selectedCommands:
+  - {fileID: 623371974}
   variables: []
   description: 
   stepPause: 0
@@ -2605,7 +2607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemId: 1
   indentLevel: 0
-  storyText: Out my my way, you second-rate sellswords. I have places to be.
+  storyText: Out my my way, you second-rate sellswords. I have places to be. {w=3}
   description: 
   character: {fileID: 0}
   portrait: {fileID: 0}
@@ -2614,7 +2616,7 @@ MonoBehaviour:
   showCount: 1
   extendPrevious: 0
   fadeWhenDone: 1
-  waitForClick: 1
+  waitForClick: 0
   stopVoiceover: 1
   waitForVO: 0
   setSayDialog: {fileID: 1148287694}
@@ -4565,7 +4567,7 @@ Prefab:
     - target: {fileID: 114435609345250608, guid: 65cef3f72a4e2824aa82b46b481dfae3,
         type: 2}
       propertyPath: grid_triggered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: level3_north
+      value: level3_northnorth
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65cef3f72a4e2824aa82b46b481dfae3, type: 2}
@@ -4970,7 +4972,7 @@ Prefab:
     - target: {fileID: 114435609345250608, guid: 65cef3f72a4e2824aa82b46b481dfae3,
         type: 2}
       propertyPath: grid_triggered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
-      value: level3_north
+      value: level3_northnorth
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65cef3f72a4e2824aa82b46b481dfae3, type: 2}

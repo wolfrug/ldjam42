@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Enemy_Level_2
   m_EditorClassIdentifier: 
   name_: Tougher Goon
-  health_: 4
+  health_: 5
   dodge_: 0.3
   attackRating_: 0.3
   criticalChance_: 0.05
